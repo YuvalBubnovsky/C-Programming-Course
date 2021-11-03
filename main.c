@@ -7,7 +7,7 @@ int main(){
   scanf("%i",&start);
   scanf("%i",&end);
   printf("The Armstrong numbers are: ");
-  for(int i = start;i<=end-1;i++){
+  for(int i = start;i<=end;i++){
       if(isArmstrong(i) == 1){
           if(i == end){
             printf("%i",i);
@@ -17,7 +17,7 @@ int main(){
   }
   printf("\n");
   printf("The Palindromes are: ");
-  for(int i = start;i<=end-1;i++){
+  for(int i = start;i<=end;i++){
       if(isPalindrome(i) == 1){
           if(i == end){
             printf("%i",i);
@@ -27,7 +27,7 @@ int main(){
   }
   printf("\n");
   printf("The Prime numbers are: ");
-  for(int i = start;i<=end-1;i++){
+  for(int i = start;i<=end;i++){
       if(isPrime(i) == 1){
           if(i == end){
             printf("%i",i);
@@ -37,7 +37,7 @@ int main(){
   }
   printf("\n");
   printf("The Strong numbers are: ");
-  for(int i = start;i<=end-1;i++){
+  for(int i = start;i<=end;i++){
       if(isPalindrome(i) == 1){
           if(i == end){
             printf("%i",i);
