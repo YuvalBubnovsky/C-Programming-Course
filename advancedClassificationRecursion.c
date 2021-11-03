@@ -5,31 +5,43 @@
 #include "NumClass.h"
 
 int reversedNum(int n);
-int armHelper(int n);
+int armHelper(int n, int digits);
 
-int reversedNum(int n){
-  if(n == 0){
-      return 0;
-  }
-  int numOfDigits = (int)log10(n) + 1;
-  return ((n%10 * pow(10,numOfDigits)) + reversedNum(n/10));
+int paliHelper(char A[],int i,int j){
+ if(i==j||(i==j-1&&A[i]==A[j])){
+     return 1;
+ }else if(A[j]!=A[i]){
+     return 0;
+ }else{
+     return paliHelper(A,++i,--j);
+ }
 }
+int isPalindrome(int a){
+if(a<0){
+	return 0;
+}
+   int length=(int)log10((double)a)+1;
+   char A[length];
+   sprintf(A,"%d",a);
+   int n = sizeof(A) / sizeof(char);
+    return paliHelper(A,0,n-1);
+  }
 
-int isPalindrome(int n){
-  if(n == reversedNum(n)){
-      return 1;
+int armHelper(int n,int digits){
+  if(n==0){
+    return 0;
+  }
+  int size = (int)log10(n) + 1;
+  if(size == 1){
+    return pow(n,digits);
   } else {
-      return 0;
+    return(pow(n%10,digits) + armHelper(n/10,digits));
   }
-}
-
-int armHelper(int n){
-    int numOfDigits = (int)log10(n) + 1;
-    return(pow(n%10,numOfDigits) + armHelper(n/10));
 }
 
 int isArmstrong(int n){
-    if(n == armHelper(n)){
+    int numOfDigits = (int)log10(n) + 1;
+    if(n == armHelper(n,numOfDigits)){
       return 1;
     } else {
       return 0;
