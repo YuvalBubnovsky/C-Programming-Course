@@ -4,14 +4,14 @@
 
 int main(){
   int start,end;
-  scanf("%i%i",&start,&end);
+  scanf("%d%d",&start,&end);
   printf("The Armstrong numbers are: ");
   for(int i = start;i<=end;i++){
       if(isArmstrong(i) == 1){
           if(i == end){
-            printf("%i",i);
+            printf("%d",i);
           }
-          printf("%i ",i);
+          printf("%d ",i);
     }
   }
   printf("\n");
@@ -19,9 +19,9 @@ int main(){
   for(int i = start;i<=end;i++){
       if(isPalindrome(i) == 1){
           if(i == end){
-            printf("%i",i);
+            printf("%d",i);
         }
-          printf("%i ",i);
+          printf("%d ",i);
     }
   }
   printf("\n");
@@ -29,9 +29,9 @@ int main(){
   for(int i = start;i<=end;i++){
       if(isPrime(i) == 1){
           if(i == end){
-            printf("%i",i);
+            printf("%d",i);
         }
-          printf("%i ",i);
+          printf("%d ",i);
     }
   }
   printf("\n");
@@ -39,9 +39,9 @@ int main(){
   for(int i = start;i<=end;i++){
       if(isPalindrome(i) == 1){
           if(i == end){
-            printf("%i",i);
+            printf("%d",i);
         }
-          printf("%i ",i);
+          printf("%d ",i);
     }
   }
   return 0;
