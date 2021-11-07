@@ -7,6 +7,7 @@
 int reversedNum(int n);
 int armHelper(int n, int digits);
 
+// Palindrome helper function using string manipulation to check for duplicate values
 int paliHelper(char A[],int i,int j){
  if(i==j||(i==j-1&&A[i]==A[j])){
      return 1;
