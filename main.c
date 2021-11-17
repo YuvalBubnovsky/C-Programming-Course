@@ -20,6 +20,13 @@ int main(void)
       {
         for (int p = 0; p < N; p++)
         {
+          mat[i][j] = 0;
+        }
+      }
+      for (int k = 0; k < N; k++)
+      {
+        for (int p = 0; p < N; p++)
+        {
           scanf("%d", &mat[k][p]);
         }
       }
