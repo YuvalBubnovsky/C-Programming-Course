@@ -20,7 +20,7 @@ int main(void)
       {
         for (int p = 0; p < N; p++)
         {
-          mat[i][j] = 0;
+          mat[k][p] = 0;
         }
       }
       for (int k = 0; k < N; k++)
