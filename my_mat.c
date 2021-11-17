@@ -20,11 +20,11 @@ void get_matrix()
 void floyd(int mat[N][N])
 {
 	int i, j, k;
-	for (k = 0; k < N; k++)
+	for (k = 1; k < N; k++)
 	{
-		for (i = 0; i < N; i++)
+		for (i = 1; i < N; i++)
 		{
-			for (j = 0; j < N; j++)
+			for (j = 1; j < N; j++)
 			{
 				if (i == j)
 				{
