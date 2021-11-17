@@ -15,7 +15,6 @@ void get_matrix()
 			scanf("%d", &mat[i][j]);
 		}
 	}
-	floyd(mat);
 }
 
 void floyd(int mat[N][N])
