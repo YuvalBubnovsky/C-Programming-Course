@@ -4,7 +4,7 @@
 #define N 10
 
 int mat[N][N];
-int min(int, int);
+int min(int, int, int);
 
 void get_matrix()
 {
@@ -32,7 +32,7 @@ void floyd(int mat[N][N])
 				}
 				else
 				{
-					mat[i][j] = min(mat[i][j], mat[i][k] + mat[k][j]);
+					mat[i][j] = min(mat[i][j], mat[i][k], mat[k][j]);
 				}
 			}
 		}
@@ -64,14 +64,14 @@ int get_weight(int mat[N][N], int i, int j)
 	}
 }
 
-int min(int a, int b)
+int min(int a, int b, int c)
 {
-	if (a < b)
+	if (b != 0 && c != 0 && b + c < a)
 	{
-		return (a);
+		return (b + c);
 	}
 	else
 	{
-		return (b);
+		return (a);
 	}
 }
