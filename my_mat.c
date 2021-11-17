@@ -6,18 +6,7 @@
 int mat[N][N];
 int min(int, int, int);
 
-void get_matrix()
-{
-	for (int i = 0; i < N; i++)
-	{
-		for (int j = 0; j < N; j++)
-		{
-			scanf("%d", &mat[i][j]);
-		}
-	}
-}
-
-void floyd(int mat[N][N])
+void floyd(int mat[N][N]) // Floyd-Warshall algorithm implementation in C
 {
 	int i, j, k;
 	for (k = 0; k < N; k++)
@@ -32,6 +21,9 @@ void floyd(int mat[N][N])
 				}
 				else
 				{
+					// This is where the magic happens - using a custom min function,
+					// we make sure that the path value isn't nullifed incase the regualr
+					// min valute is 0 and in case either mat[i][k] or mat[k][j] is equal to 0
 					mat[i][j] = min(mat[i][j], mat[i][k], mat[k][j]);
 				}
 			}
@@ -39,6 +31,7 @@ void floyd(int mat[N][N])
 	}
 }
 
+// Returns true if a path exists on the graph
 int has_path(int mat[N][N], int i, int j)
 {
 	if (mat[i][j] == 0)
@@ -51,6 +44,7 @@ int has_path(int mat[N][N], int i, int j)
 	}
 }
 
+// Returns the weight of the shortest path on the graph
 int get_weight(int mat[N][N], int i, int j)
 {
 	int flag = has_path(mat, i, j);
@@ -64,6 +58,7 @@ int get_weight(int mat[N][N], int i, int j)
 	}
 }
 
+// Custom min function to account for edge-cases in the Floyd-Warshall algorithm
 int min(int a, int b, int c)
 {
 	if (b != 0 && c != 0 && b + c < a)

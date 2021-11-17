@@ -16,6 +16,7 @@ int main(void)
     switch (input)
     {
     case 'A': // Input a matrix
+              // We are resetting the matrix's value to 0 incase this is not the first matrix since the program started
       for (int k = 0; k < N; k++)
       {
         for (int p = 0; p < N; p++)
@@ -23,6 +24,7 @@ int main(void)
           mat[k][p] = 0;
         }
       }
+      // This is the actual input of the matrix
       for (int k = 0; k < N; k++)
       {
         for (int p = 0; p < N; p++)
