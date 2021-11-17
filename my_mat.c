@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "my_mat.h"
 
 #define N 10
 
@@ -14,7 +15,7 @@ void get_matrix()
 			scanf("%d", &mat[i][j]);
 		}
 	}
-	floyd(mat[N][N]);
+	floyd(mat);
 }
 
 void floyd(int mat[N][N])
@@ -36,6 +37,31 @@ void floyd(int mat[N][N])
 				}
 			}
 		}
+	}
+}
+
+int has_path(int mat[N][N], int i, int j)
+{
+	if (mat[i][j] == 0)
+	{
+		return 0;
+	}
+	else
+	{
+		return 1;
+	}
+}
+
+int get_weight(int mat[N][N], int i, int j)
+{
+	int flag = has_path(mat, i, j);
+	if (flag == 0)
+	{
+		return 0;
+	}
+	else
+	{
+		return mat[i][j];
 	}
 }
 
