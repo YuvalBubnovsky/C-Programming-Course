@@ -16,9 +16,9 @@ int main(void)
     switch (input)
     {
     case 'A': // Input a matrix
-      for (int k = 0; i < N; i++)
+      for (int k = 0; k < N; i++)
       {
-        for (int p = 0; j < N; j++)
+        for (int p = 0; p < N; j++)
         {
           scanf("%d", &mat[k][p]);
         }
