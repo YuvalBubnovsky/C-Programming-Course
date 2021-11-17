@@ -1,14 +1,17 @@
 #include <stdio.h>
-#include <conio.h>
 #include "my_mat.h"
 
-int flag = 1;
+int main(void)
+{
+  int flag = 1;
 
-while(flag == 1){
-  char = getchar();
-  switch (char){
+  while (flag == 1)
+  {
+    char = getchar();
+    switch (char)
+    {
     case 'A':
-      get_matrix();
+      int mat[10][10] = get_matrix();
       break;
 
     case 'B':
@@ -21,5 +24,7 @@ while(flag == 1){
 
     case 'D':
       flag = 0;
+    }
   }
+  return 0;
 }
