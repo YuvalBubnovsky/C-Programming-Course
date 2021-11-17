@@ -16,11 +16,11 @@ int main(void)
     switch (input)
     {
     case 'A': // Input a matrix
-      for (int i = 0; i < N; i++)
+      for (int k = 0; i < N; i++)
       {
-        for (int j = 0; j < N; j++)
+        for (int p = 0; j < N; j++)
         {
-          scanf("%d", &mat[i][j]);
+          scanf("%d", &mat[k][p]);
         }
       }
       floyd(mat);
