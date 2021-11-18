@@ -25,27 +25,18 @@ int main(void)
         }
       }
       // This is the actual input of the matrix
-      for (int k = 0; k < N; k++)
-      {
-        for (int p = 0; p < N; p++)
-        {
-          scanf("%d", &mat[k][p]);
-        }
-      }
-      floyd(mat);
+      get_matrix(mat);
       break;
 
     case 'B': // Check if a path exists
       scanf("%d%d", &i, &j);
       if (has_path(mat, i, j) == 1)
       {
-        printf("True");
-        printf("\n");
+        printf("True\n");
       }
       else
       {
-        printf("False");
-        printf("\n");
+        printf("False\n");
       }
       break;
 
@@ -58,8 +49,7 @@ int main(void)
       }
       else
       {
-        printf("-1");
-        printf("\n");
+        printf("-1\n");
       }
       break;
 
