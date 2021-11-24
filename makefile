@@ -1,7 +1,7 @@
 
 .PHONY: clean all
 
-all: connections
+all: connections matrixlib
 
 connections: main.o my_matlib.a my_mat.h
 	gcc -Wall -g -o connections main.o my_matlib.a
