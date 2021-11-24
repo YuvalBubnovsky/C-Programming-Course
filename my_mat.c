@@ -6,6 +6,7 @@
 int mat[N][N];
 int min(int, int);
 
+// This function recieves adjacency-matrix as user input and runs the Floyd-Warshall algorithm on it
 void get_matrix(int mat[N][N])
 {
 	for (int k = 0; k < N; k++)
@@ -67,7 +68,6 @@ int get_weight(int mat[N][N], int i, int j)
 	}
 }
 
-// Custom min function to account for edge-cases in the Floyd-Warshall algorithm
 int min(int a, int b)
 {
 	if (a < b)
