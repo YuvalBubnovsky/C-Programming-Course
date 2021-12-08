@@ -1,0 +1,6 @@
+.PHONY: clean all
+
+all:
+
+clean:
+	rm -f *.o *.a *.so stringProg
