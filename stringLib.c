@@ -1,82 +1,249 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
+#include <stdbool.h>
 #include "stringLib.h"
 
-int getGematriaValue(char *word)
+int gematria(char c)
 {
-    int strSize = strlen(word);
-    int gValue = 0;
-    for (int i = 0; i < strSize; i++)
+    if (c >= 'a' && c <= 'z')
     {
-        if (('a' <= word[i]) && (word[i] <= 'z'))
-        {
-            gValue += (word[i] - 96);
-        }
-        else if (('A' <= word[i]) && (word[i] <= 'Z'))
-        {
-            gValue += (word[i] - 64);
-        }
-        else
-        {
-            gValue += 0;
-        }
+        return c - 'a' + 1;
     }
-    return gValue;
+    if (c >= 'A' && c <= 'Z')
+    {
+        return c - 'A' + 1;
+    }
+    return 0;
 }
 
-void gematriaSequences(char *txt, int gValueWord)
+char AZBY(char c)
+{
+    if (c >= 'a' && c <= 'z')
+    {
+        return 'z' - (c - 'a');
+    }
+    else if (c >= 'A' && c <= 'Z')
+    {
+        return 'Z' - (c - 'A');
+    }
+    return c;
+}
+
+int gematriaValue(char *word)
+{
+    int sum = 0;
+    int i = 0;
+    while (word[i] != '\0')
+    {
+        sum += gematria(word[i]);
+        i++;
+    }
+    return sum;
+}
+
+char *AZBYString(char *word)
 {
     int i = 0;
-    int j = 0;
-    int gValueTxt = 0;
-    char *toPrint = (char *)malloc(1024 * sizeof(char));
-    if (toPrint == NULL)
+    while (word[i] != '\0')
     {
-        printf("Memory Allocation Failed!");
-        exit(1);
+        word[i] = AZBY(word[i]);
+        i++;
     }
+    return word;
+}
 
-    for (i = 0; txt[i]; i++)
+void gematriaSubStrings(int gematriaVal, char *txt)
+{
+    int i = 0;
+    int printCheck = false;
+    for (; txt[i] != '\0'; i++)
     {
-        gValueTxt = 0;
-        for (j = i; txt[j]; j++)
+        char c = txt[i];
+        if (gematria(c) == 0)
         {
-            if (gValueTxt > gValueWord)
+            continue;
+        }
+        int sum = 0;
+        int j = i;
+        for (; txt[j] != '\0'; j++)
+        {
+            sum += gematria(txt[j]);
+            if (sum >= gematriaVal)
             {
                 break;
-            }
-            if (gValueTxt == gValueWord)
-            {
-                if (gValueTxt != 0)
-                {
-                    char *toAdd = (char *)malloc(30 * sizeof(char));
-                    if (toAdd == NULL)
-                    {
-                        printf("Memory Allocation Failed!");
-                        exit(1);
-                    }
-                    int temp = 0;
-                    for (int k = 0; k < j; k++)
-                    {
-                        toAdd[temp] = txt[k];
-                        temp++;
-                    }
-                    toAdd[temp] = '~';
-                    temp++;
-                    // toAdd[temp] = '\0';
-                    strcat(toPrint, toAdd);
-                }
-                break;
-            }
-            else
-            {
-                char c = txt[j];
-                char *temp_p = &c;
-                gValueTxt += getGematriaValue(temp_p);
             }
         }
+        if (sum == gematriaVal)
+        {
+            if (printCheck == true)
+            {
+                printf("~");
+            }
+            for (int k = i; k <= j; k++)
+            {
+                printf("%c", txt[k]);
+            }
+            printCheck = true;
+        }
     }
-    printf("%s\n", toPrint);
+}
+
+void azbySubStrings(char *word, char *txt)
+{
+    int i = 0;
+    int length = strlen(word);
+    char *azbyWord = AZBYString(word);
+    int gematriaVal = gematriaValue(azbyWord);
+    int printCheck = false;
+    for (; txt[i] != '\0'; i++)
+    {
+        char c = txt[i];
+        if (gematria(c) == 0)
+        {
+            continue;
+        }
+        int sum = 0;
+        int j = i;
+        int counter = 0;
+        for (; txt[j] != '\0'; j++)
+        {
+            char c = txt[j];
+            if (!(c == azbyWord[counter] || c == azbyWord[length - counter - 1]))
+            {
+                break;
+            }
+            counter++;
+
+            sum += gematria(txt[j]);
+            if (sum >= gematriaVal)
+            {
+                break;
+            }
+        }
+        if (sum == gematriaVal)
+        {
+            if (printCheck == true)
+            {
+                printf("~");
+            }
+            for (int k = i; k <= j; k++)
+            {
+                printf("%c", txt[k]);
+            }
+            printCheck = true;
+        }
+    }
+}
+
+int weight(char c)
+{
+    if (97 <= c && c <= 122)
+    {
+        return (c - 97 + 1);
+    }
+    else if (65 <= c && c <= 90)
+    {
+        return (c - 90 + 1);
+    }
+    return 0;
+}
+int english(char c)
+{
+    if (c == 32)
+    {
+        return true;
+    }
+    if (97 <= (int)c && (int)c <= 122)
+    {
+        return true;
+    }
+    if (65 <= (int)c && (int)c <= 90)
+    {
+        return true;
+    }
+    return false;
+}
+
+void Anagram(char *w, char *text)
+{
+    // copying w
+    char *word = (char *)malloc(sizeof(char) * WORD);
+    strcpy(word, w);
+    char c;
+    int i;
+    int wordWeight = 0;
+    for (i = 0; i < strlen(w); i++)
+    {
+        c = w[i];
+        wordWeight += weight(c);
+    }
+    int wght = 0;
+    char *find;
+    int pos;
+    char *seq = (char *)malloc(sizeof(char) * TXT);
+    int counter = 0;
+    int flag = false;
+    int printCheck = false;
+
+    for (i = 0; i < strlen(text); i++)
+    {
+        c = text[i];
+        // printf("%c",c);
+        find = strchr(word, c);
+        if (find == NULL && c != 32)
+        {
+            if (wght == wordWeight)
+            {
+                if (printCheck == true)
+                {
+                    printf("~");
+                }
+                printf("%s", seq);
+                i -= counter - 1;
+                printCheck = true;
+            }
+            // reset variables regardless:
+            word = (char *)malloc(sizeof(char) * WORD);
+            strcpy(word, w);
+            seq = (char *)malloc(sizeof(char) * TXT);
+            counter = 0;
+            wght = 0;
+            flag = false;
+        }
+        else if (english(c) == true && c != 32)
+        {
+            // this segment removes the found char from it's position
+            pos = find - word;
+            memmove(&word[pos], &word[pos + 1], strlen(word) - pos);
+            seq[counter] = c;
+            counter++;
+            wght += weight(c);
+            flag = true;
+        }
+        else if (flag != false)
+        {
+            // if current char is a " ".
+            seq[counter] = c;
+            counter++;
+        }
+        if (wght == wordWeight)
+        {
+            // question print condition
+            if (printCheck == true)
+            {
+                printf("~");
+            }
+            printf("%s", seq);
+            printCheck = true;
+            word = (char *)malloc(sizeof(char) * WORD);
+            strcpy(word, w);
+            seq = (char *)malloc(sizeof(char) * TXT);
+            i -= counter - 1;
+            counter = 0;
+            wght = 0;
+            flag = false;
+            free(seq);
+            free(word);
+        }
+    }
 }
