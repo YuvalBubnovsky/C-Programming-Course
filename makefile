@@ -1,9 +1,9 @@
 .PHONY: clean all
 
-all: test stringlib
+all: stringProg stringlib
 
-test: main.o my_string.a stringLib.h
-	gcc -Wall -g -o test main.c my_string.a
+stringProg: main.o my_string.a stringLib.h
+	gcc -Wall -g -o stringProg main.c my_string.a
 
 stringlib: my_string.a
 
@@ -17,4 +17,4 @@ main.o: main.c stringLib.h
 	gcc -Wall -g -c main.c
 
 clean:
-	rm -f *.o *.a *.so stringProg test
+	rm -f *.o *.a *.so stringProg

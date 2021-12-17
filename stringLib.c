@@ -3,32 +3,39 @@
 #include <stdbool.h>
 #include "stringLib.h"
 
+// Convert a single character to it's gematria value
 int gematria(char c)
 {
-    if (c >= 'a' && c <= 'z')
+    // 97 = a, 122 = z
+    // 65 = A, 90 = Z
+    if (97 <= c && c <= 122)
     {
-        return c - 'a' + 1;
+        return c - 97 + 1;
     }
-    if (c >= 'A' && c <= 'Z')
+    if (65 <= c && c <= 90)
     {
-        return c - 'A' + 1;
+        return c - 65 + 1;
     }
     return 0;
 }
 
-char AZBY(char c)
+// Convert a single characted using Atbash cipher
+char Atbash(char c)
 {
-    if (c >= 'a' && c <= 'z')
+    // 97 = a, 122 = z
+    // 65 = A, 90 = Z
+    if (97 <= c && c <= 122)
     {
-        return 'z' - (c - 'a');
+        return 122 - (c - 97);
     }
-    else if (c >= 'A' && c <= 'Z')
+    else if (65 <= c && c <= 90)
     {
-        return 'Z' - (c - 'A');
+        return 90 - (c - 65);
     }
     return c;
 }
 
+// Converting a string to it's gematria value
 int gematriaValue(char *word)
 {
     int sum = 0;
@@ -41,12 +48,13 @@ int gematriaValue(char *word)
     return sum;
 }
 
-char *AZBYString(char *word)
+// Encrypting a string using Atbash cipher
+char *AtbashString(char *word)
 {
     int i = 0;
     while (word[i] != '\0')
     {
-        word[i] = AZBY(word[i]);
+        word[i] = Atbash(word[i]);
         i++;
     }
     return word;
@@ -88,12 +96,12 @@ void gematriaSubStrings(int gematriaVal, char *txt)
     }
 }
 
-void azbySubStrings(char *word, char *txt)
+void atbashSubStrings(char *word, char *txt)
 {
     int i = 0;
     int length = strlen(word);
-    char *azbyWord = AZBYString(word);
-    int gematriaVal = gematriaValue(azbyWord);
+    char *atbashWord = AtbashString(word);
+    int gematriaVal = gematriaValue(atbashWord);
     int printCheck = false;
     for (; txt[i] != '\0'; i++)
     {
@@ -108,7 +116,7 @@ void azbySubStrings(char *word, char *txt)
         for (; txt[j] != '\0'; j++)
         {
             char c = txt[j];
-            if (!(c == azbyWord[counter] || c == azbyWord[length - counter - 1]))
+            if (!(c == atbashWord[counter] || c == atbashWord[length - counter - 1]))
             {
                 break;
             }
@@ -135,6 +143,7 @@ void azbySubStrings(char *word, char *txt)
     }
 }
 
+// Two helper function for Anagram finder
 int weight(char c)
 {
     if (97 <= c && c <= 122)
@@ -188,7 +197,6 @@ void Anagram(char *w, char *text)
     for (i = 0; i < strlen(text); i++)
     {
         c = text[i];
-        // printf("%c",c);
         find = strchr(word, c);
         if (find == NULL && c != 32)
         {
@@ -242,6 +250,7 @@ void Anagram(char *w, char *text)
             counter = 0;
             wght = 0;
             flag = false;
+            // never forget to free allocations
             free(seq);
             free(word);
         }

@@ -8,11 +8,11 @@
 
 void getValues();
 int gematria(char c);
-char AZBY(char c);
-char *AZBYString(char *word);
+char Atbash(char c);
+char *AtbashString(char *word);
 int gematriaValue(char *word);
 void gematriaSubStrings(int gematriaVal, char *txt);
-void azbySubStrings(char *word, char *txt);
+void atbashSubStrings(char *word, char *txt);
 void Anagram(char *w, char *text);
 int weight(char c);
 int english(char c);
