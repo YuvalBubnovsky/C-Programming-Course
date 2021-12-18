@@ -173,86 +173,144 @@ int english(char c)
     return false;
 }
 
-void Anagram(char *w, char *text)
+int isEqual(char *array1, char *words)
 {
-    // copying w
-    char *word = (char *)malloc(sizeof(char) * WORD);
-    strcpy(word, w);
-    char c;
-    int i;
-    int wordWeight = 0;
-    for (i = 0; i < strlen(w); i++)
-    {
-        c = w[i];
-        wordWeight += weight(c);
-    }
-    int wght = 0;
-    char *find;
-    int pos;
-    char *seq = (char *)malloc(sizeof(char) * TXT);
     int counter = 0;
-    int flag = false;
-    int printCheck = false;
-
-    for (i = 0; i < strlen(text); i++)
+    int Array1[128] = {0};
+    for (int i = 0; i < strlen(words); ++i)
     {
-        c = text[i];
-        find = strchr(word, c);
-        if (find == NULL && c != 32)
+        Array1[gematria(words[i])] += 1;
+    }
+    int Array2[128] = {0};
+    for (int i = 0; i < strlen(array1); ++i)
+    {
+        Array2[gematria(array1[i])] += 1;
+    }
+    for (int i = 0; i < 128; ++i)
+    {
+        if (i == 32)
         {
-            if (wght == wordWeight)
+            continue;
+        }
+        else
+        {
+            if (Array1[i] != 0 && Array2[i] != 0)
             {
-                if (printCheck == true)
+                if (Array1[i] == Array2[i])
                 {
-                    printf("~");
+                    counter += Array1[i];
                 }
-                printf("%s", seq);
-                i -= counter - 1;
-                printCheck = true;
             }
-            // reset variables regardless:
-            word = (char *)malloc(sizeof(char) * WORD);
-            strcpy(word, w);
-            seq = (char *)malloc(sizeof(char) * TXT);
-            counter = 0;
-            wght = 0;
-            flag = false;
         }
-        else if (english(c) == true && c != 32)
+    }
+    if (counter == strlen(words))
+    {
+        return 1;
+    }
+    return 0;
+}
+
+void Anagram(char *words, char *paragraph)
+{
+    if (strlen(paragraph) != 0)
+    {
+        int start = 0;
+        int end = 0;
+        int count_for_print = 0;
+        // char *temp_print = (char *) malloc(strlen(paragraph) + 1);
+        char *temp_print = calloc(strlen(paragraph) + 1, sizeof(char));
+        // memset(temp_print, 0, strlen(paragraph) + 1);
+        while (start < strlen(paragraph) - 1)
         {
-            // this segment removes the found char from it's position
-            pos = find - word;
-            memmove(&word[pos], &word[pos + 1], strlen(word) - pos);
-            seq[counter] = c;
-            counter++;
-            wght += weight(c);
-            flag = true;
-        }
-        else if (flag != false)
-        {
-            // if current char is a " ".
-            seq[counter] = c;
-            counter++;
-        }
-        if (wght == wordWeight)
-        {
-            // question print condition
-            if (printCheck == true)
+            // char *temp_array = (char *) malloc(strlen(paragraph) + 1);
+            // memset(temp_array, 0, strlen(paragraph) + 1);
+            char *temp_array = calloc(strlen(paragraph) + 1, sizeof(char));
+            int flag3 = 0;
+            int count_array = 0;
+            if (start + strlen(words) < strlen(paragraph))
             {
-                printf("~");
+                for (int i = start; i < strlen(paragraph); ++i)
+                {
+                    for (int j = 0; j < strlen(words); ++j)
+                    {
+                        if (paragraph[i] == words[j])
+                        {
+                            start = i;
+                            flag3 = 1;
+                            break;
+                        }
+                    }
+                    if (flag3)
+                    {
+                        break;
+                    }
+                }
             }
-            printf("%s", seq);
-            printCheck = true;
-            word = (char *)malloc(sizeof(char) * WORD);
-            strcpy(word, w);
-            seq = (char *)malloc(sizeof(char) * TXT);
-            i -= counter - 1;
-            counter = 0;
-            wght = 0;
-            flag = false;
-            // never forget to free allocations
-            free(seq);
-            free(word);
+            if (flag3)
+            {
+                int counter2 = 0;
+                int counter3 = start;
+                int spaces = 0;
+                while (counter2 < strlen(words))
+                {
+                    if (paragraph[counter3] != ' ')
+                    {
+                        counter2++;
+                        counter3++;
+                    }
+                    else
+                    {
+                        spaces++;
+                        counter3++;
+                    }
+                }
+                if (counter2 == strlen(words))
+                {
+                    end = spaces + counter2 + start;
+                    if (end <= strlen(paragraph))
+                    {
+                        for (int i = start; i < end; ++i)
+                        {
+                            temp_array[count_array] = paragraph[i];
+                            count_array++;
+                        }
+                    }
+                    if (isEqual(temp_array, words))
+                    {
+                        for (int i = 0; i < strlen(temp_array); ++i)
+                        {
+                            temp_print[count_for_print] = temp_array[i];
+                            count_for_print++;
+                        }
+                        temp_print[count_for_print] = '~';
+                        count_for_print++;
+                        start += 1;
+                    }
+                    else
+                    {
+                        start += 1;
+                    }
+                }
+                else
+                {
+                    start += 1;
+                }
+            }
+            else
+            {
+                start += 1;
+            }
+        }
+        if (strlen(temp_print) > 0)
+        {
+            char *tempy = (char *)calloc(strlen(temp_print), sizeof(char));
+            strncpy(tempy, temp_print, count_for_print - 1);
+            tempy[strlen(temp_print) - 1] = '\0';
+            printf("%s", tempy);
+            if (strlen(tempy) == 0)
+            {
+                printf("\n");
+            }
         }
     }
 }

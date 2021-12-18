@@ -16,3 +16,4 @@ void atbashSubStrings(char *word, char *txt);
 void Anagram(char *w, char *text);
 int weight(char c);
 int english(char c);
+int isEqual(char *array1, char *words);
