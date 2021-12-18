@@ -30,7 +30,6 @@ int main(void)
 
     printf("Anagram Sequences: ");
     Anagram(wordCopy, txt);
-    printf("\n");
 }
 
 void getValues()
