@@ -96,6 +96,8 @@ void gematriaSubStrings(int gematriaVal, char *txt)
     }
 }
 
+// Atbash sequence finder - We scan the text for sequences which have a similar gematric value to the original word
+// but this time we only print the exact words or it's reverse order after using Atbash cipher on it
 void atbashSubStrings(char *word, char *txt)
 {
     int i = 0;
@@ -173,18 +175,19 @@ int english(char c)
     return false;
 }
 
-int isEqual(char *array1, char *words)
+// A function to compare gematric values of two strings
+int isEqual(char *string, char *word)
 {
     int counter = 0;
-    int Array1[128] = {0};
-    for (int i = 0; i < strlen(words); ++i)
+    int toCompare1[128] = {0};
+    for (int i = 0; i < strlen(word); ++i)
     {
-        Array1[gematria(words[i])] += 1;
+        toCompare1[gematria(word[i])] += 1;
     }
-    int Array2[128] = {0};
-    for (int i = 0; i < strlen(array1); ++i)
+    int toCompare2[128] = {0};
+    for (int i = 0; i < strlen(string); ++i)
     {
-        Array2[gematria(array1[i])] += 1;
+        toCompare2[gematria(string[i])] += 1;
     }
     for (int i = 0; i < 128; ++i)
     {
@@ -194,66 +197,62 @@ int isEqual(char *array1, char *words)
         }
         else
         {
-            if (Array1[i] != 0 && Array2[i] != 0)
+            if (toCompare1[i] != 0 && toCompare2[i] != 0)
             {
-                if (Array1[i] == Array2[i])
+                if (toCompare1[i] == toCompare2[i])
                 {
-                    counter += Array1[i];
+                    counter += toCompare1[i];
                 }
             }
         }
     }
-    if (counter == strlen(words))
+    if (counter == strlen(word))
     {
         return 1;
     }
     return 0;
 }
 
-void Anagram(char *words, char *paragraph)
+void Anagram(char *word, char *txt)
 {
-    if (strlen(paragraph) != 0)
+    if (strlen(txt) != 0)
     {
         int start = 0;
         int end = 0;
         int count_for_print = 0;
-        // char *temp_print = (char *) malloc(strlen(paragraph) + 1);
-        char *temp_print = calloc(strlen(paragraph) + 1, sizeof(char));
-        // memset(temp_print, 0, strlen(paragraph) + 1);
-        while (start < strlen(paragraph) - 1)
+        char *temp_print = calloc(strlen(txt) + 1, sizeof(char));
+        while (start < strlen(txt) - 1)
         {
-            // char *temp_array = (char *) malloc(strlen(paragraph) + 1);
-            // memset(temp_array, 0, strlen(paragraph) + 1);
-            char *temp_array = calloc(strlen(paragraph) + 1, sizeof(char));
-            int flag3 = 0;
+            char *temp_array = calloc(strlen(txt) + 1, sizeof(char));
+            int flag = false;
             int count_array = 0;
-            if (start + strlen(words) < strlen(paragraph))
+            if (start + strlen(word) < strlen(txt))
             {
-                for (int i = start; i < strlen(paragraph); ++i)
+                for (int i = start; i < strlen(txt); ++i)
                 {
-                    for (int j = 0; j < strlen(words); ++j)
+                    for (int j = 0; j < strlen(word); ++j)
                     {
-                        if (paragraph[i] == words[j])
+                        if (txt[i] == word[j])
                         {
                             start = i;
-                            flag3 = 1;
+                            flag = true;
                             break;
                         }
                     }
-                    if (flag3)
+                    if (flag == true)
                     {
                         break;
                     }
                 }
             }
-            if (flag3)
+            if (flag == true)
             {
                 int counter2 = 0;
                 int counter3 = start;
                 int spaces = 0;
-                while (counter2 < strlen(words))
+                while (counter2 < strlen(word))
                 {
-                    if (paragraph[counter3] != ' ')
+                    if (txt[counter3] != ' ')
                     {
                         counter2++;
                         counter3++;
@@ -264,18 +263,18 @@ void Anagram(char *words, char *paragraph)
                         counter3++;
                     }
                 }
-                if (counter2 == strlen(words))
+                if (counter2 == strlen(word))
                 {
                     end = spaces + counter2 + start;
-                    if (end <= strlen(paragraph))
+                    if (end <= strlen(txt))
                     {
                         for (int i = start; i < end; ++i)
                         {
-                            temp_array[count_array] = paragraph[i];
+                            temp_array[count_array] = txt[i];
                             count_array++;
                         }
                     }
-                    if (isEqual(temp_array, words))
+                    if (isEqual(temp_array, word))
                     {
                         for (int i = 0; i < strlen(temp_array); ++i)
                         {
