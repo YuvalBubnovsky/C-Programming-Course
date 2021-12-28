@@ -1,20 +1,20 @@
 .PHONY: clean all
 
-all: stringProg stringlib
+all: graph myGraph
 
-stringProg: main.o my_string.a stringLib.h
-	gcc -Wall -g -o stringProg main.c my_string.a
+graph: main.o my_graph.a graph.h
+	gcc -Wall -g -o graph main.c my_graph.a
 
-stringlib: my_string.a
+myGraph: my_graph.a
 
-my_string.a: stringLib.o
-	ar -rcs my_string.a stringLib.o
+my_graph.a: graph_lib.o
+	ar -rcs my_graph.a graph_lib.o
 
-stringLib.o: stringLib.c
-	gcc -Wall -g -c stringLib.c
+graph_lib.o: graph.c
+	gcc -Wall -g -c graph.c
 
-main.o: main.c stringLib.h
+main.o: main.c graph.h
 	gcc -Wall -g -c main.c
 
 clean:
-	rm -f *.o *.a *.so stringProg
+	rm -f *.o *.a *.so graph myGraph

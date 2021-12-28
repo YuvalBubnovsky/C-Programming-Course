@@ -18,6 +18,17 @@ typedef struct GRAPH_NODE_
     struct GRAPH_NODE_ *next;
 } node, *pnode;
 
+typedef struct Graph_{
+    node *head;
+} graph, *pgraph;
+
+// ADDED SIGNATURES
+
+void free_node_mem(pnode head);
+void dijkstra();
+
+// ORIGINAL SIGNATURES
+
 void build_graph_cmd(pnode *head);
 void insert_node_cmd(pnode *head);
 void delete_node_cmd(pnode *head);
