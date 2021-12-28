@@ -17,7 +17,8 @@
 
 // GLOBALS
 
-pgraph g;
+graph *g;
+
 
 // HELPERS
 
@@ -34,6 +35,7 @@ void free_node_mem(pnode head)
 void build_graph_cmd(pnode *head)
 {
     //TODO: while loop that applies free_node_mem to all nodes in current grap
+    g = (graph *)malloc(sizeof(struct Graph_));
     g->head = (pnode)head; 
 }
 
