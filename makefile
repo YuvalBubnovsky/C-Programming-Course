@@ -8,7 +8,7 @@ graph: main.o my_graph.a graph.h
 myGraph: my_graph.a
 
 my_graph.a: graph_lib.o
-	ar -rcs my_graph.a graph_lib.o
+	ar -rcs my_graph.a graph.o
 
 graph_lib.o: graph.c
 	gcc -Wall -g -c graph.c

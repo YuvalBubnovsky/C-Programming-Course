@@ -36,12 +36,12 @@ void build_graph_cmd(pnode *head)
 {
     //TODO: while loop that applies free_node_mem to all nodes in current grap
     g = (graph *)malloc(sizeof(struct Graph_));
-    g->head = (pnode)head; 
+    g->head = head; 
 }
 
 void insert_node_cmd(pnode *head)
 {
-    node *next = g->head;
+    node *next = *(g->head);
 
     while (next != NULL) // O(n)
     {
@@ -59,21 +59,21 @@ void insert_node_cmd(pnode *head)
 
     //If we did not find the node - push it to the start of the list -> O(1)
 
-    node *temp = g->head;
-    g->head = (pnode)head;
-    g->head->next = temp;
+    node *temp = *(g->head);
+    *(g->head) = (pnode)head;
+    (*(g->head))->next = temp;
 
 }
 
 void delete_node_cmd(pnode *head)
 {
     // TODO: fix this to use the fact that *head is given!!!!!!!!!!!
-    node *next = g->head;
+    node *next = *(g->head);
 
     // if we need to delete the head of the graph
     if (next->node_num == (*head)->node_num) 
     {
-        g->head = next->next;
+        *(g->head) = next->next;
         free_node_mem(*head);
         return;
     }
@@ -111,7 +111,7 @@ void printGraph_cmd(pnode head)
 
 void deleteGraph_cmd(pnode *head)
 {
-    node *next = g->head;
+    node *next = *(g->head);
     node *temp;
 
     while (next != NULL)

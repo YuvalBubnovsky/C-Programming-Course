@@ -19,7 +19,7 @@ typedef struct GRAPH_NODE_
 } node, *pnode;
 
 typedef struct Graph_{
-    node *head;
+    pnode *head;
 } graph, *pgraph;
 
 // ADDED SIGNATURES
