@@ -36,26 +36,40 @@ void free_edges_mem(pnode head)
 
 // ALGORITHMS
 
-void build_graph_cmd(pnode *head)
+void build_graph_cmd(graph *head)
 {
-    deleteGraph_cmd(g->head);
-    g = (graph *)malloc(sizeof(struct Graph_));
-    g->head = head;
+    // deleteGraph_cmd(g->head);
+    // g = (graph *)malloc(sizeof(struct Graph_));
+    g = head;
+    g->init = 1;
 }
 
-void insert_node_cmd(pnode *head)
+void insert_node_cmd(pnode head)
 {
-    node *next = *(g->head);
+    node *next = g->head;
 
-    while (next != NULL) // O(n)
+    if (next->node_num == head->node_num)
     {
-        if (next->node_num == (*head)->node_num)
+        pnode temp = next->next;
+        free_edges_mem(next);
+        next = head;
+        g->head = head;
+        next->next = temp;
+        next->edges = head->edges;
+        return;
+    }
+
+    while (next->next != NULL) // O(n)
+    {
+        if (next->next->node_num == head->node_num)
         {
             // If found node in graph - override it's values to apply new ones.
             // also free old edge memory
-            free_edges_mem(next);
-            next->next = (*head)->next;
-            next->edges = (*head)->edges;
+            pnode temp = next->next->next;
+            free_edges_mem(next->next);
+            next->next = head;
+            next->next->next = temp;
+            next->next->edges = head->edges;
             return;
         }
         next = getNext;
@@ -63,32 +77,47 @@ void insert_node_cmd(pnode *head)
 
     // If we did not find the node - push it to the start of the list -> O(1)
 
-    node *temp = *(g->head);
-    *(g->head) = (pnode)head;
-    (*(g->head))->next = temp;
+    node *temp = g->head;
+    g->head = (pnode)head;
+    g->head->next = temp;
 }
 
-void delete_node_cmd(pnode *head)
+void delete_node_cmd(int id)
 {
     // TODO: fix this to use the fact that *head is given!!!!!!!!!!!
-    node *next = *(g->head);
+    node *next = g->head;
 
     // if we need to delete the head of the graph
-    if (next->node_num == (*head)->node_num)
+    if (next->node_num == id)
     {
-        *(g->head) = next->next;
-        free_edges_mem(*head);
+        g->head = next->next;
+        free_edges_mem(next);
+        free(next);
         return;
     }
-    else
+
+    while (next->next != NULL)
     {
-        // cry
+        if (next->next->node_num == id)
+        {
+            pnode temp = next->next->next;
+            free_edges_mem(next->next);
+            free(next->next);
+            next->next = temp;
+        }
+        next = next->next;
     }
 }
 
-void printGraph_cmd(pnode head)
+void printGraph_cmd(graph *g)
 {
-    node *next = head->next;
+    pnode next = g->head;
+
+    if (next == NULL)
+    {
+        printf("graph is empty :(");
+    }
+
     edge *edge;
 
     while (next != NULL)
@@ -107,7 +136,7 @@ void printGraph_cmd(pnode head)
 
 void deleteGraph_cmd(pnode *head)
 {
-    node *next = *(g->head);
+    node *next = g->head;
     node *nodeToFree;
     edge *edge, *edgeToFree;
 
