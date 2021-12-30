@@ -7,6 +7,7 @@ typedef struct GRAPH_NODE_ *pnode;
 typedef struct edge_
 {
     int weight;
+    int dest;
     pnode endpoint;
     struct edge_ *next;
 } edge, *pedge;
@@ -19,12 +20,13 @@ typedef struct GRAPH_NODE_
 } node, *pnode;
 
 typedef struct Graph_{
+    int size;
     pnode *head;
 } graph, *pgraph;
 
 // ADDED SIGNATURES
 
-void free_node_mem(pnode head);
+void free_edges_mem(pnode head);
 void dijkstra();
 
 // ORIGINAL SIGNATURES

@@ -8,16 +8,33 @@
 
 // HELPERS
 
+void updateEndpoints(graph *g, pnode *arr)
+{
+    node *next = *(g->head);
+    edge *edge;
+
+    while (next != NULL)
+    {
+        edge = next->edges;
+        while (edge != NULL)
+        {
+            edge->endpoint = arr[edge->dest]->next;
+            edge = edge->next;
+        }
+        next = next->next;
+    }
+}
+
 // MAIN
 
 int main()
 {
-    //char c;
-    //int i;
+    // char c;
+    // int i;
     char userInput;
     bool flag = true;
-    int temp;
-    // int nodeid;
+    // int temp;
+    //  int nodeid;
     pnode n = NULL;
     pnode n2 = (pnode)malloc(sizeof(pnode));
     pedge e = (pedge)malloc(sizeof(pedge));
@@ -27,17 +44,26 @@ int main()
     while (true)
     {
         userInput = getchar();
-        SC: switch (userInput)
+    SC:
+        switch (userInput)
         {
         case 'E': // EXIT
+        {
             break;
+        }
         case 'P': // PRINT
+        {
             printGraph_cmd(*(g->head));
+            break;
+        }
         case 'A':
-            //deleteGraph_cmd(g->head);
+        {
+            // deleteGraph_cmd(g->head);
             scanf(" %c", &userInput); // tells me how many nodes there are
-            pnode arr[(int)(userInput - '0')];
-            for(int i=0;i<(userInput - '0'); i++){
+            g->size = (userInput - '0');
+            pnode arr[g->size]; // IMPORTANT - no need to free local variables.
+            for (int i = 0; i < g->size; i++)
+            {
                 arr[i] = (pnode)malloc(sizeof(pnode));
             }
             n = (pnode)malloc(sizeof(struct GRAPH_NODE_));
@@ -45,76 +71,74 @@ int main()
             {
                 scanf(" %c", &userInput);
 
-                //TODO: consider using - if ('A'<= userInput <= 'Z')
-                if (userInput == 'A' || userInput == 'B' || userInput == 'D' 
-                || userInput == 'S' || userInput == 'T' /* this is the nastiest IF */
-                || userInput == 'P' || userInput == 'E')
+                // TODO: consider using - if ('A'<= userInput <= 'Z')
+                if (userInput == 'A' || userInput == 'B' || userInput == 'D' || userInput == 'S' || userInput == 'T' /* this is the nastiest IF */
+                    || userInput == 'P' || userInput == 'E')
                 {
-                    // TODO: goto relevant case
-                    // something like, userInput = (char)temp
-                    // then goto line 59 (switch case)
-                    //userInput = (char)temp;
+                    updateEndpoints(g, arr);
+                    // free(arr);
                     goto SC;
+                    break; // just in case.
                 }
 
                 if (userInput == 'n' || userInput == 'N')
                 {
-                    /*
-                    if (n->next == NULL)
-                    {
-                        n->next = (node *)malloc(sizeof(struct GRAPH_NODE_));
-                        // n->next->node_num = NULL;
-                        n->next->next = NULL;
-                        n->next->edges = NULL;
-                        flag = true;
-                    }
-                    else{*/
-                        n2->next = n->next;
-                        n->next = (node *)malloc(sizeof(struct GRAPH_NODE_));
-                        // n->next->node_num = NULL;
-                        n->next->next = n2->next;
-                        n->next->edges = NULL;
-                        flag = true;
-                    //}
+                    n2->next = n->next;
+                    n->next = (node *)malloc(sizeof(struct GRAPH_NODE_));
+                    // n->next->node_num = NULL;
+                    n->next->next = n2->next;
+                    n->next->edges = NULL;
+                    flag = true;
                 }
                 else
                 {
                     if (flag)
                     {
                         n->next->node_num = (userInput - '0');
-                        arr[userInput - '0']->next = n->next; //TODO: consider arr[id] = n->next instead
+                        arr[userInput - '0']->next = n->next;
                         flag = false;
                     }
                     else
                     {
-                        /*
-                        if (n->next->edges == NULL)
-                        {
-                            n->next->edges = (pedge)malloc(sizeof(struct edge_));
-                            n->next->edges->endpoint = arr[temp]->next; // potentially wrong - if so try without arr->next
-                            scanf("%d", &temp);
-                            n->next->edges->weight = temp;
-                            n->next->edges->next = NULL;
-                        }
-                        else
-                        {*/
-                            e->next = n->next->edges;
-                            n->next->edges = (pedge)malloc(sizeof(struct edge_));
-                            n->next->edges->endpoint = arr[userInput - '0'];
-                            scanf(" %c", &userInput);
-                            n->next->edges->weight = (userInput - '0');
-                            n->next->edges->next = e->next;
-                        //}
+                        e->next = n->next->edges;
+                        n->next->edges = (pedge)malloc(sizeof(struct edge_));
+                        n->next->edges->dest = (userInput - '0');
+                        n->next->edges->endpoint = (pnode)malloc(sizeof(pnode));
+                        scanf(" %c", &userInput);
+                        n->next->edges->weight = (userInput - '0');
+                        n->next->edges->next = e->next;
                     }
                 }
-                
             }
-            // TODO: if arr[temp]->next is wrong, update every endpoint here!
-            free(arr);
+            updateEndpoints(g, arr);
+            break;
+        }
+        case 'B':
+        {
+            goto SC;
+            break;
+        }
+        case 'D':
+        {
+            break;
+        }
+        case 'S':
+        {
+            break;
+        }
+        case 'T':
+        {
+            break;
+        }
+        default:
+        {
+            break;
+        }
         }
     }
     free(e);
     free(n);
     free(n2);
+    free(g);
     return 0;
 }

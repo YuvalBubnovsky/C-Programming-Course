@@ -3,7 +3,7 @@
 all: graph myGraph
 
 graph: main.o my_graph.a graph.h
-	gcc -Wall -g -o graph main.c my_graph.a
+	gcc -Wall -ggdb3 -g -o graph main.c my_graph.a
 
 myGraph: my_graph.a
 
