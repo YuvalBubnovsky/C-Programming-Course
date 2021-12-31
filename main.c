@@ -7,7 +7,7 @@
 #include "graph.h"
 
 // HELPERS
-// test
+
 
 void updateEndpoints(graph *g, pnode *arr)
 {
