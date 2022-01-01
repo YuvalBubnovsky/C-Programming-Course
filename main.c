@@ -8,8 +8,7 @@
 
 // HELPERS
 
-
-void updateEndpoints(graph *g, pnode *arr)
+void updateEndpoint(graph *g, pnode *arr)
 {
     node *next = g->head;
     edge *edge;
@@ -49,7 +48,7 @@ int main()
     // int i;
     char userInput;
     bool flag = true;
-    // int temp;
+    int temp;
     //  int nodeid;
     pnode n = NULL;
     pnode n2 = (pnode)malloc(sizeof(pnode));
@@ -83,7 +82,7 @@ int main()
             pnode arr[g->size]; // IMPORTANT - no need to free local variables.
             for (int i = 0; i < g->size; i++)
             {
-                arr[i] = (pnode)malloc(sizeof(pnode));
+                arr[i] = (pnode)malloc(sizeof(pnode)); // TODO: FREE
             }
             n = (pnode)malloc(sizeof(struct GRAPH_NODE_));
             while (true)
@@ -96,7 +95,7 @@ int main()
                 {
                     // TODO: figure out how to just break to leave the loop.
                     g->head = n->next;
-                    updateEndpoints(g, arr);
+                    updateEndpoint(g, arr);
                     build_graph_cmd(g);
                     //build_graph_cmd(&(n->next));
                     goto SC;
@@ -110,6 +109,7 @@ int main()
                     // n->next->node_num = NULL;
                     n->next->next = n2->next;
                     n->next->edges = NULL;
+                    n->next->tag = NULL;
                     flag = true;
                 }
                 else
@@ -132,7 +132,7 @@ int main()
                     }
                 }
             }
-            updateEndpoints(g, arr);
+            updateEndpoint(g, arr);
             //build_graph_cmd(&(n->next));
             break;
         }
@@ -175,6 +175,12 @@ int main()
         }
         case 'S':
         {
+            scanf("%c",&userInput);
+            temp = (userInput -'0');
+            scanf("%c",&userInput);
+            shortsPath_cmd(temp, (userInput - '0'));
+            scanf("%c",&userInput);
+            goto SC;
             break;
         }
         case 'T':
