@@ -8,16 +8,46 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
+#include "priorityQueue.h"
+#include <string.h>
 
 // DEFINES
-// TODO: change getNext to be more precise such that getNext(node) is node->next
-#define getNext next->next
-#define getHead graph->head
-// TODO: define a getId(node) as node->node_num
+
+#define INF 9999
 
 // GLOBALS
 
 graph *g;
+graph *copy;
+
+/* APPEND BUFFER */
+
+struct abuf
+{
+    char *b;
+    int len;
+};
+
+#define ABUF_INIT \
+    {             \
+        NULL, 0   \
+    }
+
+void abAppend(struct abuf *ab, const char *s, int len)
+{
+    char *new = realloc(ab->b, ab->len + len);
+
+    if (new == NULL)
+        return;
+    memcpy(&new[ab->len], s, len);
+    ab->b = new;
+    ab->len += len;
+}
+
+void abFree(struct abuf *ab)
+{
+    free(ab->b);
+}
 
 // HELPERS
 
@@ -32,6 +62,51 @@ void free_edges_mem(pnode head)
         next = next->next;
         free(edgeToDelete);
     }
+}
+
+pnode dijkstra(int src, int dest)
+{
+    emptyPQ();
+
+    pnode n = g->head;
+    pnode source;
+    while (n != NULL)
+    {
+        n->dist = INF;
+        n->tag = NULL;
+        n->visited = 0;
+        if (n->node_num == src)
+            source = n;
+        n = n->next;
+    }
+    source->dist = 0;
+    push(source);
+
+    pedge edge;
+    int weight;
+    while (!isEmpty())
+    {
+        n = pop();
+        n->visited = 1;
+        if (n->node_num == dest)
+            return n;
+        weight = n->dist;
+        edge = n->edges;
+
+        while (edge != NULL)
+        {
+            if (weight + edge->weight < edge->endpoint->dist)
+            {
+                edge->endpoint->tag = n;
+                edge->endpoint->dist = weight + edge->weight;
+            }
+            if (edge->endpoint->visited == 0)
+                push(edge->endpoint);
+            edge = edge->next;
+        }
+    }
+
+    return NULL;
 }
 
 // ALGORITHMS
@@ -72,7 +147,7 @@ void insert_node_cmd(pnode head)
             next->next->edges = head->edges;
             return;
         }
-        next = getNext;
+        next = next->next;
     }
 
     // If we did not find the node - push it to the start of the list -> O(1)
@@ -93,6 +168,7 @@ void delete_node_cmd(int id)
         g->head = next->next;
         free_edges_mem(next);
         free(next);
+        g->size--;
         return;
     }
 
@@ -107,6 +183,7 @@ void delete_node_cmd(int id)
         }
         next = next->next;
     }
+    g->size--;
 }
 
 void printGraph_cmd(graph *g)
@@ -155,12 +232,39 @@ void deleteGraph_cmd(pnode *head)
     }
 }
 // priority 5
-void shortsPath_cmd(pnode head)
+void shortsPath_cmd(int src, int dest)
 {
-    // use dijkstra
+    printf(" ");
+    pnode n = dijkstra(src, dest);
+    if (n == NULL)
+    {
+        printf("-1");
+        return;
+    }
+
+    pnode temp = n;
+    temp = NULL;
+    while (n != NULL)
+    {
+        n->pqnext = temp;
+        temp = n;
+        n = n->tag;
+    }
+
+    int p;
+    //printf("sad");
+    while (temp != NULL)
+    {
+        p = temp->node_num;
+        //printf(" af");
+        printf("%d", p);
+        temp = temp->pqnext;
+    }
+
+    // abFree(&buf);
 }
 // priority 6
-void TSP_cmd(pnode head)
+void TSP_cmd(graph *g)
 {
     // Implement with O(n!) naive solution
 }
