@@ -20,35 +20,6 @@
 graph *g;
 graph *copy;
 
-/* APPEND BUFFER */
-
-struct abuf
-{
-    char *b;
-    int len;
-};
-
-#define ABUF_INIT \
-    {             \
-        NULL, 0   \
-    }
-
-void abAppend(struct abuf *ab, const char *s, int len)
-{
-    char *new = realloc(ab->b, ab->len + len);
-
-    if (new == NULL)
-        return;
-    memcpy(&new[ab->len], s, len);
-    ab->b = new;
-    ab->len += len;
-}
-
-void abFree(struct abuf *ab)
-{
-    free(ab->b);
-}
-
 // HELPERS
 
 void free_edges_mem(pnode head)
@@ -109,6 +80,10 @@ pnode dijkstra(int src, int dest)
     return NULL;
 }
 
+void permutation(int *cities, int start, int end, int nsize, int ans, int head)
+{
+}
+
 // ALGORITHMS
 
 void build_graph_cmd(graph *head)
@@ -159,7 +134,6 @@ void insert_node_cmd(pnode head)
 
 void delete_node_cmd(int id)
 {
-    // TODO: fix this to use the fact that *head is given!!!!!!!!!!!
     node *next = g->head;
 
     // if we need to delete the head of the graph
@@ -252,19 +226,32 @@ void shortsPath_cmd(int src, int dest)
     }
 
     int p;
-    //printf("sad");
     while (temp != NULL)
     {
         p = temp->node_num;
-        //printf(" af");
         printf("%d", p);
         temp = temp->pqnext;
     }
-
-    // abFree(&buf);
 }
 // priority 6
-void TSP_cmd(graph *g)
+void TSP_cmd(int *cities)
 {
-    // Implement with O(n!) naive solution
+    int max = 0;
+    pnode n = g->head;
+    while (n != NULL)
+    {
+        n->dist = max++; // recycling dist for a sequencer
+        n = n->next;
+    }
+
+    int ans = __INT_MAX__;
+    permutation(cities, 0, (g->size) - 1, max, &ans, g->head);
+    if (ans != __INT_MAX__)
+    {
+        printf("%d", ans);
+    }
+    else
+    {
+        printf("%d", -1);
+    }
 }

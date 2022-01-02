@@ -185,6 +185,17 @@ int main()
         }
         case 'T':
         {
+            //scanf("%c", &userInput);
+            int *cities = (int*)malloc(sizeof(int)*g->size); //assumes size is relevant!
+            int i = 0;
+            while (!(userInput == 'A' || userInput == 'B' || userInput == 'D' || userInput == 'S' || userInput == 'T' /* this is the nastiest IF */
+                    || userInput == 'P' || userInput == 'E'))
+            {
+                scanf(" %c", &userInput);
+                cities[i++] = userInput -'0'; // -> cities[0] is source.
+            }
+            TSP_cmd(cities);
+            goto SC;
             break;
         }
         default:

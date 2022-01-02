@@ -43,6 +43,6 @@ void delete_node_cmd(int id);
 void printGraph_cmd(graph *g); // for self debug
 void deleteGraph_cmd(pnode *head);
 void shortsPath_cmd(int src, int dest);
-void TSP_cmd(graph *g);
+void TSP_cmd(int *cities);
 
 #endif
