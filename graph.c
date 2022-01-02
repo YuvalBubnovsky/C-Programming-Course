@@ -234,32 +234,14 @@ void deleteGraph_cmd(pnode *head)
 // priority 5
 void shortsPath_cmd(int src, int dest)
 {
-    printf(" ");
+    // printf(" ");
     pnode n = dijkstra(src, dest);
     if (n == NULL)
     {
         printf("-1");
         return;
     }
-
-    pnode temp = n;
-    temp = NULL;
-    while (n != NULL)
-    {
-        n->pqnext = temp;
-        temp = n;
-        n = n->tag;
-    }
-
-    int p;
-    //printf("sad");
-    while (temp != NULL)
-    {
-        p = temp->node_num;
-        //printf(" af");
-        printf("%d", p);
-        temp = temp->pqnext;
-    }
+    printf("%d", n->dist);
 
     // abFree(&buf);
 }
