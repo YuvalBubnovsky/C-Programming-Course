@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include "priorityQueue.h"
+#include "graph.h"
 
 ppq prio;
 
@@ -10,7 +11,7 @@ ppq emptyPQ()
 {
     ppq pq = (ppq)malloc(sizeof(ppq));
     pq->size = 0;
-    pq->head = NULL;
+    pq->head = (pnode)malloc(sizeof(pnode));
     prio = pq;
     return pq;
 }

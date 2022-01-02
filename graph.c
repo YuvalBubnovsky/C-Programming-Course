@@ -208,13 +208,14 @@ void deleteGraph_cmd(pnode *head)
 // priority 5
 void shortsPath_cmd(int src, int dest)
 {
-    printf(" ");
+    // printf(" ");
     pnode n = dijkstra(src, dest);
     if (n == NULL)
     {
         printf("-1");
         return;
     }
+<<<<<<< HEAD
 
     pnode temp = n;
     temp = NULL;
@@ -232,6 +233,11 @@ void shortsPath_cmd(int src, int dest)
         printf("%d", p);
         temp = temp->pqnext;
     }
+=======
+    printf("%d", n->dist);
+
+    // abFree(&buf);
+>>>>>>> 1af1374d07583f1a182915f04a98b2a6488664d1
 }
 // priority 6
 void TSP_cmd(int *cities)
