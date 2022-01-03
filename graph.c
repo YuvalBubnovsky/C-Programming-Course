@@ -147,7 +147,7 @@ bool findNode(int id, int *cities)
 
 void permutation(int adj[N][N], int counter, int i, int *cities, bool visited[N], int level, int sum)
 {
-    if (level == counter + 1)
+    if (level == counter)
     {
         if (sum < best)
             best = sum;
@@ -158,10 +158,10 @@ void permutation(int adj[N][N], int counter, int i, int *cities, bool visited[N]
     {
         if (visited[r] != true && adj[i][r] != -1)
         {
-            //if (findNode(r, cities))
+            if (findNode(r, cities))
                 permutation(adj, counter, r, cities, visited, level + 1, sum + adj[i][r]);
-            //else
-                //permutation(adj, counter, r, cities, visited, level, sum + adj[i][r]);
+            else
+                permutation(adj, counter, r, cities, visited, level, sum + adj[i][r]);
 
             visited[r] = false; // for others.
         }
@@ -230,7 +230,6 @@ void delete_node_cmd(int id)
         g->head = next->next;
         free_edges_mem(next);
         free(next);
-        g->size--;
         freeOtherEdges(id);
         return;
     }
@@ -243,7 +242,6 @@ void delete_node_cmd(int id)
             free_edges_mem(next->next);
             free(next->next);
             freeOtherEdges(id);
-            g->size--;
             next->next = temp;
             return;
         }
@@ -313,13 +311,22 @@ void shortsPath_cmd(int src, int dest)
 // priority 6
 void TSP_cmd(int *cities, int k)
 {
-    N = g->size;
+    int max = 0;
+    pnode n = g->head;
+    while (n != NULL)
+    {
+        if (n->node_num > max)
+            max = n->node_num;
+        n = n->next;
+    }
+    
+    N = max + 1 ;
     int adj[N][N];
     for (int i = 0; i < N; i++)
         for (int j = 0; j < N; j++)
             adj[i][j] = -1;
 
-    pnode n = g->head;
+    n = g->head;
     pedge edge;
     while (n != NULL)
     {
@@ -336,6 +343,8 @@ void TSP_cmd(int *cities, int k)
     int temp = __INT_MAX__;
 
     n = g->head;
+    if( k > 2)
+        k++;
     while (n != NULL)
     {
         memset(visited, false, sizeof(bool) * N);
