@@ -25,7 +25,7 @@ ppq newPQ(pnode head)
     return pq;
 }
 
-void push(pnode node){
+void push(pnode node, ppq pr){
 
     if (isEmpty())
     {

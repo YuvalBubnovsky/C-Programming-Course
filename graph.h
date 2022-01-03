@@ -2,7 +2,6 @@
 #define GRAPH_
 
 typedef struct GRAPH_NODE_ *pnode;
-;
 
 typedef struct edge_
 {
@@ -19,7 +18,6 @@ typedef struct GRAPH_NODE_
     int node_num;
     pedge edges;
     struct GRAPH_NODE_ *next;
-    //struct GRAPH_NODE_ *orig;  //this helps with PQ
     int visited;
     struct GRAPH_NODE_ *pqnext; // same^.- instead of copyGraph()
 } node, *pnode;
@@ -43,6 +41,6 @@ void delete_node_cmd(int id);
 void printGraph_cmd(graph *g); // for self debug
 void deleteGraph_cmd(pnode *head);
 void shortsPath_cmd(int src, int dest);
-void TSP_cmd(graph *g);
+void TSP_cmd(int *cities, int k);
 
 #endif

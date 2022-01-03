@@ -40,6 +40,12 @@ pnode getNode(int id, graph *g)
     return NULL;
 }
 
+void getInput(char *c){
+    scanf("%c", c);
+    if (*c == ' ')
+        scanf("%c", c);
+}
+
 // MAIN
 
 int main()
@@ -77,7 +83,7 @@ int main()
         case 'A':
         {
             //deleteGraph_cmd(g->head);
-            scanf(" %c", &userInput); // tells me how many nodes there are
+            getInput(&userInput);; // tells me how many nodes there are
             g->size = (userInput - '0');
             pnode arr[g->size]; // IMPORTANT - no need to free local variables.
             for (int i = 0; i < g->size; i++)
@@ -87,26 +93,23 @@ int main()
             n = (pnode)malloc(sizeof(struct GRAPH_NODE_));
             while (true)
             {
-                scanf(" %c", &userInput);
+               getInput(&userInput);
 
                 // TODO: consider using - if ('A'<= userInput <= 'Z')
                 if (userInput == 'A' || userInput == 'B' || userInput == 'D' || userInput == 'S' || userInput == 'T' /* this is the nastiest IF */
                     || userInput == 'P' || userInput == 'E')
                 {
-                    // TODO: figure out how to just break to leave the loop.
                     g->head = n->next;
                     updateEndpoint(g, arr);
                     build_graph_cmd(g);
-                    //build_graph_cmd(&(n->next));
                     goto SC;
-                    break; // just in case.
+                    break;
                 }
 
                 if (userInput == 'n' || userInput == 'N')
                 {
                     n2->next = n->next;
                     n->next = (node *)malloc(sizeof(struct GRAPH_NODE_));
-                    // n->next->node_num = NULL;
                     n->next->next = n2->next;
                     n->next->edges = NULL;
                     n->next->tag = NULL;
@@ -138,7 +141,7 @@ int main()
         }
         case 'B':
         {
-            scanf("%c", &userInput);
+            getInput(&userInput);
             n = (node *)malloc(sizeof(struct GRAPH_NODE_));
             n->node_num = (userInput - '0');
             n->next = NULL;
@@ -146,7 +149,7 @@ int main()
 
             while (true)
             {
-                scanf(" %c", &userInput);
+                getInput(&userInput);;
                 if (userInput == 'A' || userInput == 'B' || userInput == 'D' || userInput == 'S' || userInput == 'T' /* this is the nastiest IF */
                     || userInput == 'P' || userInput == 'E')
                 {
@@ -159,7 +162,7 @@ int main()
                 n->edges = (pedge)malloc(sizeof(struct edge_));
                 n->edges->dest = (userInput - '0');
                 n->edges->endpoint = getNode(n->edges->dest, g);
-                scanf(" %c", &userInput);
+                getInput(&userInput);
                 n->edges->weight = (userInput - '0');
                 n->edges->next = e->next;
             }
@@ -169,22 +172,41 @@ int main()
         }
         case 'D':
         {
-            scanf("%c",&userInput);
+            getInput(&userInput);
             delete_node_cmd(userInput-'0');
             break;
         }
         case 'S':
         {
-            scanf("%c",&userInput);
+            getInput(&userInput);
             temp = (userInput -'0');
-            scanf("%c",&userInput);
+            getInput(&userInput);
             shortsPath_cmd(temp, (userInput - '0'));
-            scanf("%c",&userInput);
+            getInput(&userInput);
             goto SC;
             break;
         }
         case 'T':
         {
+            getInput(&userInput);
+            int k = (userInput - '0');
+            int *cities = (int*)malloc(sizeof(int)*k);
+            int i = 0;
+            while (true)
+            {
+                getInput(&userInput);
+                if (userInput == 'A' || userInput == 'B' || userInput == 'D' || userInput == 'S' || userInput == 'T' /* this is the nastiest IF */
+                    || userInput == 'P' || userInput == 'E')
+                {
+                    TSP_cmd(cities, k);
+                    goto SC;
+                    break;
+                }
+
+                cities[i++] = userInput -'0';
+            }
+            TSP_cmd(cities, k);
+            goto SC;
             break;
         }
         default:
