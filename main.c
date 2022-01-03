@@ -104,7 +104,7 @@ int main()
                     g->head = n->next;
                     updateEndpoint(g, arr);
                     build_graph_cmd(g);
-                    free(g->head);
+                   // free(g->head);
                     free(n);
                     for (int i = 0; i < g->size; i++)
                     {
