@@ -53,9 +53,9 @@ int main()
 {
     // char c;
     // int i;
-    char userInput;
+    char userInput = ' ';
     bool flag = true;
-    int temp;
+    int temp = 1;
     //  int nodeid;
     pnode n = NULL;
     pnode n2 = (pnode)malloc(sizeof(pnode));
@@ -203,8 +203,12 @@ int main()
         case 'T':
         {
             getInput(&userInput);
-            int k = (userInput - '0');
-            int *cities = (int *)malloc(sizeof(int) * k);
+            int k = 1;
+            k = (userInput - '0');
+            int cities[k];
+            for(int j = 0;j<k;j++){
+                cities[j] = -1;
+            }
             int i = 0;
             while (true)
             {
