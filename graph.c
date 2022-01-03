@@ -304,7 +304,7 @@ void shortsPath_cmd(int src, int dest)
         printf("-1");
         return;
     }
-    printf("Dijsktra shortest path: %d\n", n->dist);
+    printf("Dijsktra shortest path: %d\n ", n->dist);
 
     // abFree(&buf);
 }
@@ -361,6 +361,6 @@ void TSP_cmd(int *cities, int k)
 
     if (temp == __INT_MAX__)
         temp = -1;
-    printf("TSP shortest path: %d\n", temp);
+    printf("TSP shortest path: %d\n ", temp);
     free(cities);
 }

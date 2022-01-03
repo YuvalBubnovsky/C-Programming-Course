@@ -70,11 +70,7 @@ int main()
 
     SC:
         if(userInput == EOF || userInput == '\n'){
-            free(e);
-            free(n);
-            free(n2);
-            free(g);
-            return 0;
+            break;
         }
         switch (userInput)
         {
@@ -100,7 +96,7 @@ int main()
 
                 // TODO: consider using - if ('A'<= userInput <= 'Z')
                 if (userInput == 'A' || userInput == 'B' || userInput == 'D' || userInput == 'S' || userInput == 'T' /* this is the nastiest IF */
-                    || userInput == 'P' || userInput == 'E' || userInput == EOF)
+                    || userInput == 'P' || userInput == 'E' || userInput == EOF || userInput == '\n')
                 {
                     g->head = n->next;
                     updateEndpoint(g, arr);
@@ -154,7 +150,7 @@ int main()
             {
                 getInput(&userInput);;
                 if (userInput == 'A' || userInput == 'B' || userInput == 'D' || userInput == 'S' || userInput == 'T' /* this is the nastiest IF */
-                    || userInput == 'P' || userInput == 'E' || userInput == EOF)
+                    || userInput == 'P' || userInput == 'E' || userInput == EOF || userInput == '\n')
                 {
                     insert_node_cmd(n);
                     goto SC;
@@ -199,7 +195,7 @@ int main()
             {
                 getInput(&userInput);
                 if (userInput == 'A' || userInput == 'B' || userInput == 'D' || userInput == 'S' || userInput == 'T' /* this is the nastiest IF */
-                    || userInput == 'P' || userInput == 'E' || userInput == EOF)
+                    || userInput == 'P' || userInput == 'E' || userInput == EOF || userInput == '\n')
                 {
                     TSP_cmd(cities, k);
                     goto SC;
@@ -219,7 +215,7 @@ int main()
         }
     }
     free(e);
-    free(n);
+    //free(n);
     free(n2);
     free(g);
     return 0;
