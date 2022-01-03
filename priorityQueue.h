@@ -10,7 +10,7 @@ typedef struct PRIORITY_QUEUE
 
 ppq emptyPQ();
 ppq newPQ(pnode head);
-void push(pnode node);
+void push(pnode node, ppq pr);
 int isEmpty();
 pnode peek();
 pnode pop(); //i.e deleteMin().

@@ -11,16 +11,70 @@
 #include "priorityQueue.h"
 #include <string.h>
 
-// DEFINES
-
-#define INF 9999
-
 // GLOBALS
 
 graph *g;
 graph *copy;
 
+int N;
+int best;
+int temp;
+
 // HELPERS
+void updateOtherEdges(pnode new)
+{
+    pnode n = g->head;
+    pedge edge;
+    while (n != NULL)
+    {
+        edge = n->edges;
+
+        while (edge != NULL)
+        {
+            if (edge->dest == new->node_num)
+            {
+                edge->endpoint = new;
+            }
+            edge = edge->next;
+        }
+        n = n->next;
+    }
+}
+
+void freeOtherEdges(int id)
+{
+    pnode n = g->head;
+    pedge edge, e;
+    while (n != NULL)
+    {
+        edge = n->edges;
+        if (edge == NULL)
+        {
+            n = n->next;
+            continue;
+        }
+
+        if (n->edges->dest == id)
+        {
+            edge->endpoint = NULL;
+            n->edges = edge->next;
+            n = n->next;
+            continue;
+        }
+
+        while (edge != NULL)
+        {
+            if (edge->dest == id)
+            {
+                edge->endpoint = NULL;
+                e->next = edge->next;
+            }
+            e = edge;
+            edge = edge->next;
+        }
+        n = n->next;
+    }
+}
 
 void free_edges_mem(pnode head)
 {
@@ -37,13 +91,13 @@ void free_edges_mem(pnode head)
 
 pnode dijkstra(int src, int dest)
 {
-    emptyPQ();
+    ppq pq = emptyPQ();
 
     pnode n = g->head;
     pnode source;
     while (n != NULL)
     {
-        n->dist = INF;
+        n->dist = __INT_MAX__;
         n->tag = NULL;
         n->visited = 0;
         if (n->node_num == src)
@@ -51,16 +105,17 @@ pnode dijkstra(int src, int dest)
         n = n->next;
     }
     source->dist = 0;
-    push(source);
+    push(source, pq);
 
     pedge edge;
     int weight;
+    pnode ans = NULL;
     while (!isEmpty())
     {
         n = pop();
         n->visited = 1;
         if (n->node_num == dest)
-            return n;
+            ans = n;
         weight = n->dist;
         edge = n->edges;
 
@@ -72,25 +127,55 @@ pnode dijkstra(int src, int dest)
                 edge->endpoint->dist = weight + edge->weight;
             }
             if (edge->endpoint->visited == 0)
-                push(edge->endpoint);
+                push(edge->endpoint, pq);
             edge = edge->next;
         }
     }
 
-    return NULL;
+    return ans;
 }
 
-void permutation(int *cities, int start, int end, int nsize, int ans, int head)
+bool findNode(int id, int *cities)
 {
+    for (int i = 0; i < sizeof(cities); i++)
+    {
+        if (cities[i] == id)
+            return true;
+    }
+    return false;
+}
+
+void permutation(int adj[N][N], int counter, int i, int *cities, bool visited[N], int level, int sum)
+{
+    if (level == counter + 1)
+    {
+        if (sum < best)
+            best = sum;
+        return;
+    }
+    visited[i] = true;
+    for (int r = 0; r < N; r++)
+    {
+        if (visited[r] != true && adj[i][r] != -1)
+        {
+            //if (findNode(r, cities))
+                permutation(adj, counter, r, cities, visited, level + 1, sum + adj[i][r]);
+            //else
+                //permutation(adj, counter, r, cities, visited, level, sum + adj[i][r]);
+
+            visited[r] = false; // for others.
+        }
+    }
+    visited[i] = false;
+    return;
 }
 
 // ALGORITHMS
 
 void build_graph_cmd(graph *head)
 {
-    // deleteGraph_cmd(g->head);
-    // g = (graph *)malloc(sizeof(struct Graph_));
     g = head;
+    g->size = head->size;
     g->init = 1;
 }
 
@@ -106,6 +191,7 @@ void insert_node_cmd(pnode head)
         g->head = head;
         next->next = temp;
         next->edges = head->edges;
+        updateOtherEdges(head);
         return;
     }
 
@@ -120,6 +206,7 @@ void insert_node_cmd(pnode head)
             next->next = head;
             next->next->next = temp;
             next->next->edges = head->edges;
+            updateOtherEdges(head);
             return;
         }
         next = next->next;
@@ -130,6 +217,7 @@ void insert_node_cmd(pnode head)
     node *temp = g->head;
     g->head = (pnode)head;
     g->head->next = temp;
+    g->size++;
 }
 
 void delete_node_cmd(int id)
@@ -143,6 +231,7 @@ void delete_node_cmd(int id)
         free_edges_mem(next);
         free(next);
         g->size--;
+        freeOtherEdges(id);
         return;
     }
 
@@ -153,11 +242,13 @@ void delete_node_cmd(int id)
             pnode temp = next->next->next;
             free_edges_mem(next->next);
             free(next->next);
+            freeOtherEdges(id);
+            g->size--;
             next->next = temp;
+            return;
         }
         next = next->next;
     }
-    g->size--;
 }
 
 void printGraph_cmd(graph *g)
@@ -215,49 +306,52 @@ void shortsPath_cmd(int src, int dest)
         printf("-1");
         return;
     }
-<<<<<<< HEAD
-
-    pnode temp = n;
-    temp = NULL;
-    while (n != NULL)
-    {
-        n->pqnext = temp;
-        temp = n;
-        n = n->tag;
-    }
-
-    int p;
-    while (temp != NULL)
-    {
-        p = temp->node_num;
-        printf("%d", p);
-        temp = temp->pqnext;
-    }
-=======
-    printf("%d", n->dist);
+    printf("%d\n", n->dist);
 
     // abFree(&buf);
->>>>>>> 1af1374d07583f1a182915f04a98b2a6488664d1
 }
 // priority 6
-void TSP_cmd(int *cities)
+void TSP_cmd(int *cities, int k)
 {
-    int max = 0;
+    N = g->size;
+    int adj[N][N];
+    for (int i = 0; i < N; i++)
+        for (int j = 0; j < N; j++)
+            adj[i][j] = -1;
+
     pnode n = g->head;
+    pedge edge;
     while (n != NULL)
     {
-        n->dist = max++; // recycling dist for a sequencer
+        edge = n->edges;
+        while (edge != NULL)
+        {
+            adj[n->node_num][edge->dest] = edge->weight;
+            edge = edge->next;
+        }
         n = n->next;
     }
 
-    int ans = __INT_MAX__;
-    permutation(cities, 0, (g->size) - 1, max, &ans, g->head);
-    if (ans != __INT_MAX__)
+    bool visited[N];
+    int temp = __INT_MAX__;
+
+    n = g->head;
+    while (n != NULL)
     {
-        printf("%d", ans);
+        memset(visited, false, sizeof(bool) * N);
+        best = __INT_MAX__;
+        if (findNode(n->node_num, cities))
+            permutation(adj, k, n->node_num, cities, visited, 1, 0);
+        else
+            permutation(adj, k, n->node_num, cities, visited, 0, 0);
+        if (best < temp)
+            temp = best;
+        // printf("best from node %d is %d\n",n->node_num,best);
+        n = n->next;
     }
-    else
-    {
-        printf("%d", -1);
-    }
+
+    if (temp == __INT_MAX__)
+        temp = -1;
+    printf("TSP path: %d\n", temp);
+    free(cities);
 }
