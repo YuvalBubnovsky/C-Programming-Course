@@ -19,7 +19,7 @@ ppq emptyPQ()
 ppq newPQ(pnode head)
 {
     ppq pq = (ppq)malloc(sizeof(ppq));
-    pq->size = 0;
+    pq->size = 1;
     pq->head = head;
     prio = pq;
     return pq;

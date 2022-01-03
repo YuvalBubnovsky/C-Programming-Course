@@ -91,7 +91,6 @@ void free_edges_mem(pnode head)
 
 pnode dijkstra(int src, int dest)
 {
-    ppq pq = emptyPQ();
 
     pnode n = g->head;
     pnode source;
@@ -105,7 +104,9 @@ pnode dijkstra(int src, int dest)
         n = n->next;
     }
     source->dist = 0;
-    push(source, pq);
+    ppq pq = newPQ(source);
+
+   // push(source, pq);
 
     pedge edge;
     int weight;
@@ -131,7 +132,7 @@ pnode dijkstra(int src, int dest)
             edge = edge->next;
         }
     }
-
+    free(pq);
     return ans;
 }
 
@@ -301,7 +302,7 @@ void shortsPath_cmd(int src, int dest)
     pnode n = dijkstra(src, dest);
     if (n == NULL)
     {
-        printf("-1");
+        printf("-1 \n");
         return;
     }
     printf("Dijsktra shortest path: %d \n", n->dist);

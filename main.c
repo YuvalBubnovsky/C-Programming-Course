@@ -31,16 +31,17 @@ pnode getNode(int id, graph *g)
 
     while (next != NULL)
     {
-        if(next->node_num == id)
+        if (next->node_num == id)
         {
             return next;
         }
         next = next->next;
-    } 
+    }
     return NULL;
 }
 
-void getInput(char *c){
+void getInput(char *c)
+{
     scanf("%c", c);
     if (*c == ' ')
         scanf("%c", c);
@@ -61,7 +62,7 @@ int main()
     pedge e = (pedge)malloc(sizeof(pedge));
 
     graph *g = (graph *)malloc(sizeof(struct Graph_));
-    g->head = (pnode)malloc(sizeof(pnode));
+    g->head = NULL;
     g->head = n;
     g->init = 0;
     while (true)
@@ -69,7 +70,8 @@ int main()
         userInput = getchar();
 
     SC:
-        if(userInput == EOF || userInput == '\n'){
+        if (userInput == EOF || userInput == '\n')
+        {
             break;
         }
         switch (userInput)
@@ -81,18 +83,19 @@ int main()
         }
         case 'A':
         {
-            //deleteGraph_cmd(g->head);
-            getInput(&userInput);; // tells me how many nodes there are
+            // deleteGraph_cmd(g->head);
+            getInput(&userInput);
+            ; // tells me how many nodes there are
             g->size = (userInput - '0');
             pnode arr[g->size]; // IMPORTANT - no need to free local variables.
             for (int i = 0; i < g->size; i++)
             {
-                arr[i] = (pnode)malloc(sizeof(pnode)); // TODO: FREE
+                arr[i] = (pnode)malloc(sizeof(pnode));
             }
             n = (pnode)malloc(sizeof(struct GRAPH_NODE_));
             while (true)
             {
-               getInput(&userInput);
+                getInput(&userInput);
 
                 // TODO: consider using - if ('A'<= userInput <= 'Z')
                 if (userInput == 'A' || userInput == 'B' || userInput == 'D' || userInput == 'S' || userInput == 'T' /* this is the nastiest IF */
@@ -101,6 +104,12 @@ int main()
                     g->head = n->next;
                     updateEndpoint(g, arr);
                     build_graph_cmd(g);
+                    free(g->head);
+                    free(n);
+                    for (int i = 0; i < g->size; i++)
+                    {
+                        free(arr[i]);
+                    }
                     goto SC;
                     break;
                 }
@@ -127,7 +136,7 @@ int main()
                         e->next = n->next->edges;
                         n->next->edges = (pedge)malloc(sizeof(struct edge_));
                         n->next->edges->dest = (userInput - '0');
-                        n->next->edges->endpoint = (pnode)malloc(sizeof(pnode));
+                        n->next->edges->endpoint = NULL;
                         scanf(" %c", &userInput);
                         n->next->edges->weight = (userInput - '0');
                         n->next->edges->next = e->next;
@@ -135,7 +144,12 @@ int main()
                 }
             }
             updateEndpoint(g, arr);
-            //build_graph_cmd(&(n->next));
+            // build_graph_cmd(&(n->next));
+
+            free(n->edges);
+            free(n->next);
+            free(n->pqnext);
+            free(n->tag);
             break;
         }
         case 'B':
@@ -148,7 +162,8 @@ int main()
 
             while (true)
             {
-                getInput(&userInput);;
+                getInput(&userInput);
+                ;
                 if (userInput == 'A' || userInput == 'B' || userInput == 'D' || userInput == 'S' || userInput == 'T' /* this is the nastiest IF */
                     || userInput == 'P' || userInput == 'E' || userInput == EOF || userInput == '\n')
                 {
@@ -156,7 +171,7 @@ int main()
                     goto SC;
                     break;
                 }
-                
+
                 e->next = n->edges;
                 n->edges = (pedge)malloc(sizeof(struct edge_));
                 n->edges->dest = (userInput - '0');
@@ -172,13 +187,13 @@ int main()
         case 'D':
         {
             getInput(&userInput);
-            delete_node_cmd(userInput-'0');
+            delete_node_cmd(userInput - '0');
             break;
         }
         case 'S':
         {
             getInput(&userInput);
-            temp = (userInput -'0');
+            temp = (userInput - '0');
             getInput(&userInput);
             shortsPath_cmd(temp, (userInput - '0'));
             getInput(&userInput);
@@ -189,7 +204,7 @@ int main()
         {
             getInput(&userInput);
             int k = (userInput - '0');
-            int *cities = (int*)malloc(sizeof(int)*k);
+            int *cities = (int *)malloc(sizeof(int) * k);
             int i = 0;
             while (true)
             {
@@ -202,7 +217,7 @@ int main()
                     break;
                 }
 
-                cities[i++] = userInput -'0';
+                cities[i++] = userInput - '0';
             }
             TSP_cmd(cities, k);
             goto SC;
@@ -215,8 +230,10 @@ int main()
         }
     }
     free(e);
-    //free(n);
+    // free(n);
     free(n2);
+    deleteGraph_cmd(&(g->head));
+    // free(g->head); FIGURE THIS OUT
     free(g);
     return 0;
 }
