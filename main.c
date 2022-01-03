@@ -67,14 +67,17 @@ int main()
     while (true)
     {
         userInput = getchar();
+
     SC:
+        if(userInput == EOF || userInput == '\n'){
+            free(e);
+            free(n);
+            free(n2);
+            free(g);
+            return 0;
+        }
         switch (userInput)
         {
-        case 'E': // EXIT
-        {
-            return 0;
-            break;
-        }
         case 'P': // PRINT
         {
             printGraph_cmd(g);
@@ -97,7 +100,7 @@ int main()
 
                 // TODO: consider using - if ('A'<= userInput <= 'Z')
                 if (userInput == 'A' || userInput == 'B' || userInput == 'D' || userInput == 'S' || userInput == 'T' /* this is the nastiest IF */
-                    || userInput == 'P' || userInput == 'E')
+                    || userInput == 'P' || userInput == 'E' || userInput == EOF)
                 {
                     g->head = n->next;
                     updateEndpoint(g, arr);
@@ -151,7 +154,7 @@ int main()
             {
                 getInput(&userInput);;
                 if (userInput == 'A' || userInput == 'B' || userInput == 'D' || userInput == 'S' || userInput == 'T' /* this is the nastiest IF */
-                    || userInput == 'P' || userInput == 'E')
+                    || userInput == 'P' || userInput == 'E' || userInput == EOF)
                 {
                     insert_node_cmd(n);
                     goto SC;
@@ -196,7 +199,7 @@ int main()
             {
                 getInput(&userInput);
                 if (userInput == 'A' || userInput == 'B' || userInput == 'D' || userInput == 'S' || userInput == 'T' /* this is the nastiest IF */
-                    || userInput == 'P' || userInput == 'E')
+                    || userInput == 'P' || userInput == 'E' || userInput == EOF)
                 {
                     TSP_cmd(cities, k);
                     goto SC;
