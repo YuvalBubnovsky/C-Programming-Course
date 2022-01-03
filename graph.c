@@ -85,7 +85,7 @@ void free_edges_mem(pnode head)
     {
         edgeToDelete = next;
         next = next->next;
-        free(edgeToDelete);
+       // free(edgeToDelete);
     }
 }
 
