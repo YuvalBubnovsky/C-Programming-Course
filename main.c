@@ -234,6 +234,7 @@ int main()
         }
         }
     }
+    
     free(e);
     free(cities);
     // free(n);
