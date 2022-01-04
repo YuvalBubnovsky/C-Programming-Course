@@ -209,7 +209,7 @@ int main()
             k = (userInput - '0');
             cities = realloc(cities, k + 1);
             free(cities);
-            cities = calloc(k + 10, sizeof(int));
+            cities = calloc(k + 10, sizeof(int)+1);
             int i = 0;
             while (true)
             {
