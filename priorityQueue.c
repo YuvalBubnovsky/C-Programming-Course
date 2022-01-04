@@ -5,23 +5,25 @@
 #include "priorityQueue.h"
 #include "graph.h"
 
-ppq prio;
+ppq prio = NULL;
 
 ppq emptyPQ()
 {
-    ppq pq = (ppq)malloc(sizeof(ppq));
+    ppq pq = (ppq)malloc(sizeof(pq));
     pq->size = 0;
-    pq->head = (pnode)malloc(sizeof(pnode));
+    pq->head = (pnode)malloc(sizeof(node));
     prio = pq;
     return pq;
 }
 
 ppq newPQ(pnode head)
 {
-    ppq pq = (ppq)malloc(sizeof(ppq));
+    ppq pq = (ppq)malloc(sizeof(pq)+sizeof(node));
     pq->size = 1;
     pq->head = head;
+    pq->head->pqnext = NULL;
     prio = pq;
+    prio->head = head;
     return pq;
 }
 
@@ -41,29 +43,26 @@ void push(pnode node, ppq pr){
         prio->size++;
         return;
     }
-    
-
-    pnode n = prio->head;
-
-    while (n->pqnext != NULL)
+    pr->head->pqnext = NULL;
+    while (pr->head->pqnext != NULL)
     {
-        if (node->dist < n->pqnext->dist)
+        if (node->dist < pr->head->pqnext->dist)
         {
-            node->pqnext = n->pqnext;
-            n->pqnext = node;
+            node->pqnext = pr->head->pqnext;
+            pr->head->pqnext = node;
             prio->size++;
             return;
         }
-        n = n->pqnext;
+        pr->head = pr->head->pqnext;
         prio++;
     }
     
-    n->pqnext = node; // in case it's at the bottom
+    pr->head->pqnext = node; // in case it's at the bottom
 }
 
 int isEmpty()
 {
-    if (prio->head == NULL || prio->size == 0)
+    if (prio->size == 0)
     {
         return true;
     }

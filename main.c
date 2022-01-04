@@ -56,12 +56,18 @@ int main()
     char userInput = ' ';
     bool flag = true;
     int temp = 1;
-    //  int nodeid;
-    pnode n = NULL;
-    pnode n2 = (pnode)malloc(sizeof(pnode));
-    pedge e = (pedge)malloc(sizeof(pedge));
+    int k = 1;
+    int* cities;
+    cities = (int*)calloc(6,sizeof(int));
 
-    graph *g = (graph *)malloc(sizeof(struct Graph_));
+
+    //  int nodeid;
+    pnode n = (pnode)malloc(sizeof(node));
+    n->next = NULL;
+    pnode n2 = (pnode)malloc(sizeof(node));
+    pedge e = (pedge)malloc(sizeof(edge));
+
+    graph *g = (graph *)malloc(sizeof(graph));
     g->head = NULL;
     g->head = n;
     g->init = 0;
@@ -90,9 +96,8 @@ int main()
             pnode arr[g->size]; // IMPORTANT - no need to free local variables.
             for (int i = 0; i < g->size; i++)
             {
-                arr[i] = (pnode)malloc(sizeof(pnode));
+                arr[i] = (pnode)malloc(sizeof(node));
             }
-            n = (pnode)malloc(sizeof(struct GRAPH_NODE_));
             while (true)
             {
                 getInput(&userInput);
@@ -117,7 +122,7 @@ int main()
                 if (userInput == 'n' || userInput == 'N')
                 {
                     n2->next = n->next;
-                    n->next = (node *)malloc(sizeof(struct GRAPH_NODE_));
+                    n->next = (pnode)malloc(sizeof(node));
                     n->next->next = n2->next;
                     n->next->edges = NULL;
                     n->next->tag = NULL;
@@ -155,7 +160,7 @@ int main()
         case 'B':
         {
             getInput(&userInput);
-            n = (node *)malloc(sizeof(struct GRAPH_NODE_));
+            n = (pnode)malloc(sizeof(node)+sizeof(node));
             n->node_num = (userInput - '0');
             n->next = NULL;
             n->edges = NULL;
@@ -173,7 +178,7 @@ int main()
                 }
 
                 e->next = n->edges;
-                n->edges = (pedge)malloc(sizeof(struct edge_));
+                n->edges = (pedge)malloc(sizeof(edge));
                 n->edges->dest = (userInput - '0');
                 n->edges->endpoint = getNode(n->edges->dest, g);
                 getInput(&userInput);
@@ -203,12 +208,10 @@ int main()
         case 'T':
         {
             getInput(&userInput);
-            int k = 1;
             k = (userInput - '0');
-            int cities[k];
-            for(int j = 0;j<k;j++){
-                cities[j] = -1;
-            }
+            cities = realloc(cities,k+1);
+            free(cities);
+            cities = calloc(k+1,sizeof(int));
             int i = 0;
             while (true)
             {
@@ -234,6 +237,7 @@ int main()
         }
     }
     free(e);
+    free(cities);
     // free(n);
     free(n2);
     deleteGraph_cmd(&(g->head));

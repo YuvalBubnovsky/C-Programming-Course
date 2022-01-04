@@ -105,12 +105,14 @@ pnode dijkstra(int src, int dest)
     }
     source->dist = 0;
     ppq pq = newPQ(source);
+    pq->head->pqnext = NULL;
 
-   // push(source, pq);
+    // push(source, pq);
 
-    pedge edge;
+    pedge edge = (pedge)malloc(sizeof(edge));
     int weight;
     pnode ans = NULL;
+    free(edge);
     while (!isEmpty())
     {
         n = pop();
@@ -133,20 +135,23 @@ pnode dijkstra(int src, int dest)
         }
     }
     free(pq);
+    free(edge);
     return ans;
 }
 
-bool findNode(int id, int *cities, size_t length)
+bool findNode(int id, int cities[], size_t length)
 {
-    for (int i = 0; i < sizeof(int)*length; i++)
+    int i = -1;
+    int s = id;
+    for (i = 0; i < sizeof(int) * length; i++)
     {
-        if (cities[i] == id)
+        if (cities[i] == s)
             return true;
     }
     return false;
 }
 
-void permutation(int adj[N][N], size_t length, int counter, int i, int *cities, bool visited[N], int level, int sum)
+void permutation(int adj[N][N], size_t length, int counter, int i, int cities[], bool visited[N], int level, int sum)
 {
     if (level == counter)
     {
@@ -160,9 +165,9 @@ void permutation(int adj[N][N], size_t length, int counter, int i, int *cities, 
         if (visited[r] != true && adj[i][r] != -1)
         {
             if (findNode(r, cities, length))
-                permutation(adj,length, counter, r, cities, visited, level + 1, sum + adj[i][r]);
+                permutation(adj, length, counter, r, cities, visited, level + 1, sum + adj[i][r]);
             else
-                permutation(adj,length, counter, r, cities, visited, level, sum + adj[i][r]);
+                permutation(adj, length, counter, r, cities, visited, level, sum + adj[i][r]);
 
             visited[r] = false; // for others.
         }
@@ -310,7 +315,7 @@ void shortsPath_cmd(int src, int dest)
     // abFree(&buf);
 }
 // priority 6
-void TSP_cmd(int *cities, int k)
+void TSP_cmd(int cities[], int k)
 {
     int max = 0;
     pnode n = g->head;
@@ -320,13 +325,16 @@ void TSP_cmd(int *cities, int k)
             max = n->node_num;
         n = n->next;
     }
-    
-    N = max + 1 ;
+
+    N = max + 1;
     int adj[N][N];
     for (int i = 0; i < N; i++)
+    {
         for (int j = 0; j < N; j++)
+        {
             adj[i][j] = -1;
-
+        }
+    }
     n = g->head;
     pedge edge;
     while (n != NULL)
@@ -346,7 +354,8 @@ void TSP_cmd(int *cities, int k)
 
     n = g->head;
     size_t length = k;
-    if( k > 2){
+    if (k > 2)
+    {
         k++;
     }
     int r = 1;
@@ -356,9 +365,9 @@ void TSP_cmd(int *cities, int k)
         best = __INT_MAX__;
         r = n->node_num;
         if (findNode(r, cities, length))
-            permutation(adj,length, k, r, cities, visited, 1, 0);
+            permutation(adj, length, k, r, cities, visited, 1, 0);
         else
-            permutation(adj,length, k, r, cities, visited, 0, 0);
+            permutation(adj, length, k, r, cities, visited, 0, 0);
         if (best < temp)
             temp = best;
         // printf("best from node %d is %d\n",n->node_num,best);
@@ -368,5 +377,5 @@ void TSP_cmd(int *cities, int k)
     if (temp == __INT_MAX__)
         temp = -1;
     printf("TSP shortest path: %d \n", temp);
-    //free(cities);
+    // free(cities);
 }
