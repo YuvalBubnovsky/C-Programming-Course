@@ -11,7 +11,7 @@
 void updateEndpoint(graph *g, pnode *arr)
 {
     node *next = g->head;
-    edge *edge;
+    edge *edge = NULL;
 
     while (next != NULL)
     {
@@ -57,9 +57,8 @@ int main()
     bool flag = true;
     int temp = 1;
     int k = 1;
-    int* cities;
-    cities = (int*)calloc(6,sizeof(int));
-
+    int *cities;
+    cities = (int *)calloc(6, sizeof(int));
 
     //  int nodeid;
     pnode n = (pnode)malloc(sizeof(node));
@@ -109,7 +108,7 @@ int main()
                     g->head = n->next;
                     updateEndpoint(g, arr);
                     build_graph_cmd(g);
-                   // free(g->head);
+                    // free(g->head);
                     free(n);
                     for (int i = 0; i < g->size; i++)
                     {
@@ -152,6 +151,7 @@ int main()
             // build_graph_cmd(&(n->next));
 
             free(n->edges);
+            free(n->next->edges);
             free(n->next);
             free(n->pqnext);
             free(n->tag);
@@ -160,7 +160,7 @@ int main()
         case 'B':
         {
             getInput(&userInput);
-            n = (pnode)malloc(sizeof(node)+sizeof(node));
+            n = (pnode)malloc(sizeof(node) + sizeof(node));
             n->node_num = (userInput - '0');
             n->next = NULL;
             n->edges = NULL;
@@ -168,7 +168,6 @@ int main()
             while (true)
             {
                 getInput(&userInput);
-                ;
                 if (userInput == 'A' || userInput == 'B' || userInput == 'D' || userInput == 'S' || userInput == 'T' /* this is the nastiest IF */
                     || userInput == 'P' || userInput == 'E' || userInput == EOF || userInput == '\n')
                 {
@@ -185,7 +184,6 @@ int main()
                 n->edges->weight = (userInput - '0');
                 n->edges->next = e->next;
             }
-
             insert_node_cmd(n);
             break;
         }
@@ -209,9 +207,9 @@ int main()
         {
             getInput(&userInput);
             k = (userInput - '0');
-            cities = realloc(cities,k+1);
+            cities = realloc(cities, k + 1);
             free(cities);
-            cities = calloc(k+1,sizeof(int));
+            cities = calloc(k + 10, sizeof(int));
             int i = 0;
             while (true)
             {

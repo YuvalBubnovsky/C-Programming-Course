@@ -43,12 +43,14 @@ void updateOtherEdges(pnode new)
 
 void freeOtherEdges(int id)
 {
-    pnode n = g->head;
-    pedge edge, e;
+    pnode n = NULL;
+    n = g->head;
+    pedge edg = NULL;
+    pedge e = NULL;
     while (n != NULL)
     {
-        edge = n->edges;
-        if (edge == NULL)
+        edg = n->edges;
+        if (edg == NULL)
         {
             n = n->next;
             continue;
@@ -56,30 +58,32 @@ void freeOtherEdges(int id)
 
         if (n->edges->dest == id)
         {
-            edge->endpoint = NULL;
-            n->edges = edge->next;
+            edg->endpoint = NULL;
+            n->edges = edg->next;
             n = n->next;
             continue;
         }
 
-        while (edge != NULL)
+        while (edg != NULL)
         {
-            if (edge->dest == id)
+            if (edg->dest == id)
             {
-                edge->endpoint = NULL;
-                e->next = edge->next;
+                edg->endpoint = NULL;
+                e->next = edg->next;
             }
-            e = edge;
-            edge = edge->next;
+            e = edg;
+            edg = edg->next;
         }
         n = n->next;
     }
+    free(edg);
+    free(e);
 }
 
 void free_edges_mem(pnode head)
 {
     edge *next = head->edges;
-    edge *edgeToDelete;
+    pedge edgeToDelete = NULL;
 
     while (next != NULL)
     {
@@ -245,9 +249,10 @@ void delete_node_cmd(int id)
         if (next->next->node_num == id)
         {
             pnode temp = next->next->next;
-            free_edges_mem(next->next);
-            free(next->next);
             freeOtherEdges(id);
+            free(next->next);
+           // free_edges_mem(next->next);
+
             next->next = temp;
             return;
         }
