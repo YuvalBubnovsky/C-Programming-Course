@@ -251,7 +251,7 @@ void delete_node_cmd(int id)
             pnode temp = next->next->next;
             freeOtherEdges(id);
             free(next->next);
-           // free_edges_mem(next->next);
+            // free_edges_mem(next->next);
 
             next->next = temp;
             return;
