@@ -61,6 +61,8 @@ void freeOtherEdges(int id)
             edg->endpoint = NULL;
             n->edges = edg->next;
             n = n->next;
+            free(edg);
+            free(e);
             continue;
         }
 
