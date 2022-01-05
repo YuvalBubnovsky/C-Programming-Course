@@ -69,6 +69,7 @@ int main()
     g->head = NULL;
     g->head = n;
     g->init = 0;
+    g->size = 0;
     while (true)
     {
         userInput = getchar();
@@ -89,7 +90,7 @@ int main()
         {
             // deleteGraph_cmd(g->head);
             getInput(&userInput);
-            ; // tells me how many nodes there are
+            // tells me how many nodes there are
             g->size = (userInput - '0');
             pnode arr[g->size]; // IMPORTANT - no need to free local variables.
             for (int i = 0; i < g->size; i++)
@@ -148,7 +149,6 @@ int main()
             }
             updateEndpoint(g, arr);
             // build_graph_cmd(&(n->next));
-
             free(n->edges);
             free(n->next->edges);
             free(n->next);
