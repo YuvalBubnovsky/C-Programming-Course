@@ -65,7 +65,6 @@ int main()
     n->next = NULL;
     pnode n2 = (pnode)malloc(sizeof(node));
     pedge e = (pedge)malloc(sizeof(edge));
-
     graph *g = (graph *)malloc(sizeof(graph));
     g->head = NULL;
     g->head = n;
@@ -185,6 +184,11 @@ int main()
                 n->edges->next = e->next;
             }
             insert_node_cmd(n);
+            free(n->edges);
+            free(n->next->edges);
+            free(n->next);
+            free(n->pqnext);
+            free(n->tag);
             break;
         }
         case 'D':
@@ -209,7 +213,7 @@ int main()
             k = (userInput - '0');
             cities = realloc(cities, k + 1);
             free(cities);
-            cities = calloc(k + 10, sizeof(int)+1);
+            cities = calloc(k + 10, sizeof(int) + 1);
             int i = 0;
             while (true)
             {
@@ -234,7 +238,7 @@ int main()
         }
         }
     }
-    
+
     free(e);
     free(cities);
     // free(n);

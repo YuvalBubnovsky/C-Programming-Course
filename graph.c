@@ -78,6 +78,7 @@ void freeOtherEdges(int id)
     }
     free(edg);
     free(e);
+    free(n);
 }
 
 void free_edges_mem(pnode head)
@@ -91,6 +92,8 @@ void free_edges_mem(pnode head)
         next = next->next;
         free(edgeToDelete);
     }
+    free(next);
+    free(head);
 }
 
 pnode dijkstra(int src, int dest)
@@ -220,6 +223,7 @@ void insert_node_cmd(pnode head)
             return;
         }
         next = next->next;
+        
     }
 
     // If we did not find the node - push it to the start of the list -> O(1)
@@ -228,6 +232,7 @@ void insert_node_cmd(pnode head)
     g->head = (pnode)head;
     g->head->next = temp;
     g->size++;
+
 }
 
 void delete_node_cmd(int id)
@@ -239,6 +244,7 @@ void delete_node_cmd(int id)
     {
         g->head = next->next;
         free_edges_mem(next);
+        free_edges_mem(next->next);
         free(next);
         freeOtherEdges(id);
         return;
@@ -251,7 +257,6 @@ void delete_node_cmd(int id)
             pnode temp = next->next->next;
             freeOtherEdges(id);
             free(next->next);
-            // free_edges_mem(next->next);
 
             next->next = temp;
             return;
@@ -287,7 +292,7 @@ void printGraph_cmd(graph *g)
 
 void deleteGraph_cmd(pnode *head)
 {
-    node *next = g->head;
+    node *next = *head;
     node *nodeToFree;
     edge *edge, *edgeToFree;
 
