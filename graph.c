@@ -223,7 +223,6 @@ void insert_node_cmd(pnode head)
             return;
         }
         next = next->next;
-        
     }
 
     // If we did not find the node - push it to the start of the list -> O(1)
@@ -232,7 +231,6 @@ void insert_node_cmd(pnode head)
     g->head = (pnode)head;
     g->head->next = temp;
     g->size++;
-
 }
 
 void delete_node_cmd(int id)
@@ -243,7 +241,6 @@ void delete_node_cmd(int id)
     if (next->node_num == id)
     {
         g->head = next->next;
-        free_edges_mem(next);
         free_edges_mem(next->next);
         free(next);
         freeOtherEdges(id);
@@ -256,8 +253,7 @@ void delete_node_cmd(int id)
         {
             pnode temp = next->next->next;
             freeOtherEdges(id);
-            free(next->next);
-
+            free_edges_mem(next->next);
             next->next = temp;
             return;
         }
